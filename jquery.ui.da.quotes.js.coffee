@@ -10,9 +10,9 @@ $.fn.extend
     settings =
         "marker" : "default"
 
-        "quoteTemplate" : "<div><input type='text'/><a href='#' data-quote-remover>remove</a></div>"
+        "template" : "<div><input type='text'/><a href='#' data-quote-remover>remove</a></div>"
 
-        "quotesMaxCount" : 5
+        "maxCount" : 5
 
     methods = {
         init: (options) ->
@@ -30,6 +30,11 @@ $.fn.extend
                 if attr
                     s.marker = attr
 
+                $tmpl = $("[data-quote-template] = #{s.marker}")
+
+                if $tmpl
+                    s.template = $tmpl
+
                 #initialize context menu
                 menuId = $("[data-quote-menu]=#{s.marker}").id
                 menuId = "id_quote_menu_#{s.marker}" ? !menuId
@@ -38,9 +43,8 @@ $.fn.extend
                 $this.contextMenu.child("a:[href] = '#quote'").append "data-bind='click: addQuote'"
 
                 #initialize quote template
-                $template = $("[data-quote-template] = #{s.marker}")
                 document.scripts.add "<script id='id_quote_template_#{s.marker} type='text/html'>
-                #{$template.html}</script>"
+                #{s.template.html}</script>"
                 $template.remove #delete from dom
 
                 #initialize destination area
@@ -49,39 +53,37 @@ $.fn.extend
 
                 #initialize scripts
                 document.scripts.add
-                "
-                    <script type='text/javascript'>
-
-                        function quote(text) {
-                            return {
-                                text: ko.observable(text),
-                                remove: function () {
-                                    viewModel.quotes.remove(this);
-                                }
-
-                            };
-                        }
-
-                        var viewModel = {
-                            quotes: ko.observableArray([]),
-                            removeQuote: function (quote) {
-                                this.quotes.remove(quote);
-                            },
-                            addQuote: function () {
-                                this.quotes.push(new quote(document.selection));
+                "<script type='text/javascript'>
+                    function quote(text) {
+                        return {
+                            text: ko.observable(text),
+                            remove: function () {
+                                viewModel.quotes.remove(this);
                             }
+
                         };
+                    }
 
-                        ko.applyBindings(viewModel);
-
-                        function afterAddQuote(element) {
-                            //move last element to the top
-                            if (viewModel.quotes().length > 1) {
-                                $(element).prependTo($(element.parentElement));
-                            }
+                    var viewModel = {
+                        quotes: ko.observableArray([]),
+                        removeQuote: function (quote) {
+                            this.quotes.remove(quote);
+                        },
+                        addQuote: function () {
+                            this.quotes.push(new quote(document.selection));
                         }
+                    };
 
-                    </script>"
+                    ko.applyBindings(viewModel);
+
+                    function afterAddQuote(element) {
+                        //move last element to the top
+                        if (viewModel.quotes().length > 1) {
+                            $(element).prependTo($(element.parentElement));
+                        }
+                    }
+
+                </script>"
         }
 
     if  methods[method]
