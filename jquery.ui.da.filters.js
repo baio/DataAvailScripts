@@ -9,22 +9,28 @@
       this.inputs = inputs;
     }
     FilterPostPresenter.prototype.click = function() {
-      var format, i;
+      var filter, format, i;
       format = function(name, expr) {
-        var _ref, _ref2;
-        expr = (_ref = expr()) != null ? _ref : expr;
-        expr = (_ref2 = "@ " + expr) != null ? _ref2 : !expr.contains("@");
+        if (expr.isFunc()) {
+          expr = expr();
+        }
+        if (expr.indexOf("@") === -1) {
+          expr = "@ " + expr;
+        }
         return expr = expr.replace("@", name);
       };
-      return ((function() {
-        var _i, _len, _results;
+      filter = ((function() {
+        var _i, _len, _ref, _results;
+        _ref = this.inputs;
         _results = [];
-        for (_i = 0, _len = inputs.length; _i < _len; _i++) {
-          i = inputs[_i];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          i = _ref[_i];
           _results.push(format(i.name, i.expression));
         }
         return _results;
-      })()).join(" and ".repalce("and and", "and".replace("and or", "or")));
+      }).call(this)).join(" and ");
+      filter = filter.trim("or").trim("and");
+      return window.location = this.settings.callbackUrl + "?$filter=" + filter;
     };
     return FilterPostPresenter;
   })();
@@ -32,13 +38,13 @@
     FilterPost: function(method) {
       var inputSettings, methods, settings;
       inputSettings = {
-        'marker': "#",
-        'name': null,
-        'expression': null
+        "marker": null,
+        "name": null,
+        "expression": null
       };
       settings = {
-        'marker': "#",
-        'callbackUrl': null
+        "marker": null,
+        "callbackUrl": null
       };
       methods = {
         init: function(options) {
@@ -57,9 +63,6 @@
             if (attr) {
               s.callbackUrl = attr;
             }
-            if (!s.marker) {
-              throw "marker must be defined";
-            }
             if (!s.callbackUrl) {
               throw "callbackUrl must be defined";
             }
@@ -68,7 +71,7 @@
             if (!data) {
               return $this.data("FilterPost", {
                 target: $this,
-                presenter: new FilterPostPresenter(s, inputs)
+                presenter: new FilterPostPresenter(s, methods.inputs())
               });
             }
           });
@@ -87,10 +90,9 @@
           return $(this).data("FilterPost").presenter.click();
         },
         inputs: function() {
-          return $("[data-filter-input=" + this.settings.marker + "]").each(function() {
-            var $this, attr, s;
-            s = $.extend({}, inputSettings);
-            $this = $(this);
+          var e, format, s, _i, _len, _ref, _results;
+          format = function($this, s) {
+            var attr;
             attr = $this.attr("data-filter-input");
             if (attr) {
               s.marker = attr;
@@ -106,14 +108,19 @@
             if (!s.name) {
               throw "input name must be defined";
             }
-            if (!s.marker) {
-              throw "input marker must be defined";
-            }
             if (!s.expression) {
               s.expression = $this.val;
             }
-            return new FilterInputPresenter(s);
-          });
+            return s;
+          };
+          s = $.extend({}, inputSettings);
+          _ref = $("[data-filter-input" + (settings.marker ? "=" + settings.marker : "") + "]");
+          _results = [];
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            e = _ref[_i];
+            _results.push(format($(e), s));
+          }
+          return _results;
         }
       };
       if (methods[method]) {

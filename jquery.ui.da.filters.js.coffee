@@ -1,3 +1,5 @@
+#dependencies: da.utils
+
 $ = jQuery
 
 class FilterPostPresenter
@@ -11,35 +13,36 @@ class FilterPostPresenter
     click: ->
         #if expression is function get value of it
         #if not contains @ append @ to start
+        #if not started with [ and | or ] insert [ and ]
         #replace @->name
         #glue all with and
-        #replace and and -> and, and or ->or
+        #remove first and | or
         format = (name, expr) ->
-             expr = expr() ? expr
-             expr = "@ " + expr ? !expr.contains "@"
+             expr = expr() if expr.isFunc()
+             expr = "@ " + expr if expr.indexOf("@") == -1
              expr = expr.replace "@", name
 
-        (format i.name, i.expression for i in inputs)
+        filter = (format i.name, i.expression for i in @inputs)
             .join(" and ")
-            .repalce("and and", "and")
-            .replace("and or", "or")
+
+        filter = filter.trim("or").trim("and")
+
+        window.location =  @settings.callbackUrl + "?$filter=" + filter
 
 $.fn.extend
   FilterPost: (method) ->
 
-    inputSettings = {
-        'marker' : "#",
+    inputSettings =
+        "marker" : null
 
-        'name' : null,
+        "name" : null,
 
-        'expression' : null
-    }
+        "expression" : null
 
-    settings = {
-        'marker' : "#",
+    settings =
+        "marker" : null,
 
-        'callbackUrl' : null
-    }
+        "callbackUrl" : null
 
     methods = {
         init: (options) ->
@@ -62,8 +65,8 @@ $.fn.extend
                 if attr
                     s.callbackUrl = attr
 
-                if !s.marker
-                    throw "marker must be defined"
+                #if !s.marker
+                #    throw "marker must be defined"
 
                 if !s.callbackUrl
                     throw "callbackUrl must be defined"
@@ -73,7 +76,7 @@ $.fn.extend
                 $this.bind "click.FilterPost", methods.click
 
                 if !data
-                   $this.data "FilterPost", {target: $this, presenter : new FilterPostPresenter s, inputs}
+                   $this.data "FilterPost", {target: $this, presenter : new FilterPostPresenter s, methods.inputs()}
 
         destroy: ->
             @.each ->
@@ -87,37 +90,34 @@ $.fn.extend
             $(@).data("FilterPost").presenter.click()
 
         inputs: ->
-            $("[data-filter-input=#{@.settings.marker}]").each ->
+            format = ($this, s) ->
 
-                s = $.extend {}, inputSettings
+                    attr = $this.attr "data-filter-input"
 
-                $this = $(@)
+                    if attr
+                        s.marker = attr
 
-                attr = $this.attr "data-filter-input"
+                    attr = $this.attr "data-filter-name"
 
-                if attr
-                    s.marker = attr
+                    if attr
+                        s.name = attr
 
-                attr = $this.attr "data-filter-name"
+                    attr = $this.attr "data-filter-expression"
 
-                if attr
-                    s.name = attr
+                    if attr
+                        s.expression = attr
 
-                attr = $this.attr "data-filter-expression"
+                    if !s.name
+                        throw "input name must be defined"
 
-                if attr
-                    s.expression = attr
+                    if !s.expression
+                        s.expression = $this.val
+                    s
 
-                if !s.name
-                    throw "input name must be defined"
+            s = $.extend {}, inputSettings
 
-                if !s.marker
-                    throw "input marker must be defined"
+            format $(e), s for e in $("[data-filter-input#{if settings.marker then "=" + settings.marker else ""}]")
 
-                if !s.expression
-                    s.expression = $this.val
-
-                new FilterInputPresenter s
         }
 
     if  methods[method]
