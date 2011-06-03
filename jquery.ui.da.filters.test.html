@@ -1,0 +1,18 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="da.utils.js"></script>
+<script type="text/javascript" src="jquery.ui.da.filters.js"></script>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+</head>
+<body>
+<input type="hidden" data-filter-input data-filter-name = "Name" data-filter-expression = "@ eq 'ITS'"/>
+<a href="#" data-filter-post data-filter-callback-url="http://localhost:51787/Company">Give me a strength!</a>
+<script type="text/javascript">
+    $("[data-filter-post]").FilterPost();
+</script>
+</body>
+</html>
