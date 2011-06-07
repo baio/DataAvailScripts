@@ -49,7 +49,9 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>copy $(ProjectDir)jquery.ui.da.table.header-sort.js c:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\jquery.ui.da.table.header-sort.js</PreBuildEvent>
+    <PreBuildEvent>copy $(ProjectDir)jquery.ui.da.table.header-sort.js c:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\jquery.ui.da.table.header-sort.js
+copy $(ProjectDir)jquery.ui.da.filters.js c:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\jquery.ui.da.filters.js
+copy $(ProjectDir)da.utils.js c:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\da.utils.js</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

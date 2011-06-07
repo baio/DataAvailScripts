@@ -9,17 +9,34 @@
       this.inputs = inputs;
     }
     FilterPostPresenter.prototype.click = function() {
-      var filter, format, i;
-      format = function(target, name, expr) {
+      var filter, filterVals, format, formatVal, i;
+      format = function(target, name, val, expr) {
+        if (expr.indexOf("$val") !== -1) {
+          if (val.isFunc()) {
+            val = val.call(target);
+          }
+          return expr.replace("$val", val);
+        }
         if (expr.isFunc()) {
           expr = expr.call(target);
         }
-        if (!name) {
+        if (name) {
           if (expr.indexOf("@") === -1 && (" " + expr).indexOf(" " + name + " ") === -1) {
             expr = "@ " + expr;
           }
+          return expr = expr.replace("@", name);
         }
-        return expr = expr.replace("@", name);
+      };
+      formatVal = function(target, name, val, expr) {
+        if (expr.indexOf("$val") !== -1) {
+          if (val.isFunc()) {
+            val = val.call(target);
+          }
+          if (name) {
+            val = name + ":" + val;
+          }
+          return val;
+        }
       };
       filter = ((function() {
         var _i, _len, _ref, _results;
@@ -27,12 +44,22 @@
         _results = [];
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           i = _ref[_i];
-          _results.push(format(i.target, i.name, i.expression));
+          _results.push(format(i.target, i.name, i.value, i.expression));
         }
         return _results;
       }).call(this)).join(" and ");
+      filterVals = ((function() {
+        var _i, _len, _ref, _results;
+        _ref = this.inputs;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          i = _ref[_i];
+          _results.push(formatVal(i.target, i.name, i.value, i.expression));
+        }
+        return _results;
+      }).call(this)).join(",");
       filter = filter.trim("or").trim("and");
-      return window.location = this.settings.callbackUrl + "?$filter=" + filter;
+      return window.location = "" + this.settings.callbackUrl + "?$filter=" + filter + "&filter_val=" + filterVals;
     };
     return FilterPostPresenter;
   })();
@@ -43,6 +70,7 @@
         "marker": null,
         "name": null,
         "expression": null,
+        "value": null,
         "target": null
       };
       settings = {
@@ -66,6 +94,9 @@
             if (attr) {
               s.callbackUrl = attr;
             }
+            if (!s.marker) {
+              throw "marker must be defined";
+            }
             if (!s.callbackUrl) {
               throw "callbackUrl must be defined";
             }
@@ -74,7 +105,7 @@
             if (!data) {
               return $this.data("FilterPost", {
                 target: $this,
-                presenter: new FilterPostPresenter(s, methods.inputs())
+                presenter: new FilterPostPresenter(s, methods.inputs(s.marker))
               });
             }
           });
@@ -94,7 +125,7 @@
           data = $(this).data("FilterPost");
           return data.presenter.click();
         },
-        inputs: function() {
+        inputs: function(marker) {
           var e, format, s, _i, _len, _ref, _results;
           format = function($this, s) {
             var attr;
@@ -110,17 +141,21 @@
             if (attr) {
               s.expression = attr;
             }
-            if (!s.name) {
-              throw "input name must be defined";
-            }
+            /*
+            if !s.name
+                throw "input name must be defined"
+            */
             if (!s.expression) {
               s.expression = $this.val;
+            }
+            if (!s.value) {
+              s.value = $this.val;
             }
             s.target = $this;
             return s;
           };
           s = $.extend({}, inputSettings);
-          _ref = $("[data-filter-input" + (settings.marker ? "=" + settings.marker : "") + "]");
+          _ref = $("[data-filter-input" + (marker ? "=" + marker : "") + "]");
           _results = [];
           for (_i = 0, _len = _ref.length; _i < _len; _i++) {
             e = _ref[_i];

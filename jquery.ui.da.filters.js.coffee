@@ -11,25 +11,42 @@ class FilterPostPresenter
     constructor: (@settings, @inputs) ->
 
     click: ->
-        #if expression is function get value of it
-        #if Name != null
-            #if not contains @ and not contains Name - append @ to start
-        #if not started with [ and | or ] insert [ and ]
-        #replace @->name
-        #glue all with and
-        #remove first and | or
-        format = (target, name, expr) ->
-             expr = expr.call(target) if expr.isFunc()
-             if !name
-                expr = "@ " + expr if expr.indexOf("@") == -1 && (" " + expr).indexOf(" #{name} ") == -1
-             expr = expr.replace "@", name
+        #if expression contains $val (if expression contains $value it should be full qualified expression)
+            #replace $value with value or value() if function
+        #else
+            #if expression is function get value of it
+            #if Name != null
+                #if not contains @ and not contains Name - append @ to start
+            #if not started with [ and | or ] insert [ and ]
+            #replace @->name
+            #glue all with and
+            #remove first and | or
+        format = (target, name, val, expr) ->
 
-        filter = (format i.target, i.name, i.expression for i in @inputs)
+             if expr.indexOf("$val") != -1
+                val = val.call(target) if val.isFunc()
+                return expr.replace "$val", val
+
+             expr = expr.call(target) if expr.isFunc()
+             if name
+                expr = "@ " + expr if expr.indexOf("@") == -1 && (" " + expr).indexOf(" #{name} ") == -1
+                expr = expr.replace "@", name
+
+        formatVal = (target, name, val, expr) ->
+             if expr.indexOf("$val") != -1
+                val = val.call(target) if val.isFunc()
+                val = name + ":" + val if name
+                val
+                
+        filter = (format i.target, i.name, i.value, i.expression for i in @inputs)
             .join(" and ")
+
+        filterVals = (formatVal i.target, i.name, i.value, i.expression for i in @inputs)
+            .join(",")
 
         filter = filter.trim("or").trim("and")
 
-        window.location =  @settings.callbackUrl + "?$filter=" + filter
+        window.location =  "#{@settings.callbackUrl}?$filter=#{filter}&filter_val=#{filterVals}"
 
 $.fn.extend
   FilterPost: (method) ->
@@ -37,14 +54,17 @@ $.fn.extend
     inputSettings =
         "marker" : null
 
-        "name" : null,
+        "name" : null
 
-        "expression" : null,
+        "expression" : null
+
+        "value" : null
 
         "target" : null
 
+
     settings =
-        "marker" : null,
+        "marker" : null
 
         "callbackUrl" : null
 
@@ -69,8 +89,8 @@ $.fn.extend
                 if attr
                     s.callbackUrl = attr
 
-                #if !s.marker
-                #    throw "marker must be defined"
+                if !s.marker
+                    throw "marker must be defined"
 
                 if !s.callbackUrl
                     throw "callbackUrl must be defined"
@@ -80,7 +100,7 @@ $.fn.extend
                 $this.bind "click.FilterPost", methods.click
 
                 if !data
-                   $this.data "FilterPost", {target: $this, presenter : new FilterPostPresenter s, methods.inputs()}
+                   $this.data "FilterPost", {target: $this, presenter : new FilterPostPresenter s, methods.inputs(s.marker)}
 
         destroy: ->
             @.each ->
@@ -94,7 +114,7 @@ $.fn.extend
             data = $(@).data "FilterPost"
             data.presenter.click()
 
-        inputs: ->
+        inputs: (marker) ->
             format = ($this, s) ->
 
                     attr = $this.attr "data-filter-input"
@@ -112,11 +132,16 @@ $.fn.extend
                     if attr
                         s.expression = attr
 
+                    ###
                     if !s.name
                         throw "input name must be defined"
+                    ###
 
                     if !s.expression
                         s.expression = $this.val
+
+                    if !s.value
+                        s.value = $this.val
 
                     s.target = $this
 
@@ -124,7 +149,7 @@ $.fn.extend
 
             s = $.extend {}, inputSettings
 
-            format $(e), s for e in $("[data-filter-input#{if settings.marker then "=" + settings.marker else ""}]")
+            format $(e), s for e in $("[data-filter-input#{if marker then "=" + marker else ""}]")
 
         }
 
