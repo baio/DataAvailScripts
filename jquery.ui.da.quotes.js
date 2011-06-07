@@ -3,11 +3,14 @@
   $ = jQuery;
   $.fn.extend({
     Quotation: function(method) {
-      var methods, settings;
+      var feq, methods, settings;
       settings = {
-        "marker": "default",
+        "marker": null,
         "template": "<div><input type='text'/><a href='#' data-quote-remover>remove</a></div>",
         "maxCount": 5
+      };
+      feq = function(marker) {
+        return window.da_feq(marker);
       };
       methods = {
         init: function(options) {
@@ -15,26 +18,31 @@
             $.extend(settings, options);
           }
           return this.each(function() {
-            var $dest, $this, $tmpl, attr, menuId, s, _ref;
+            var $dest, $menu, $this, $tmpl, attr, htmlMarker, menuId, s, _ref;
             s = $.extend({}, settings);
             $this = $(this);
             attr = $this.attr("data-quote-source");
             if (attr) {
               s.marker = attr;
             }
-            $tmpl = $("[data-quote-template] = " + s.marker);
+            $tmpl = $("[data-quote-template]" + (feq(s.marker)));
             if ($tmpl[0]) {
               s.template = $tmpl.html();
               $tmpl.remove();
             }
-            menuId = $("[data-quote-menu]=" + s.marker).id;
-            menuId = (_ref = "id_quote_menu_" + s.marker) != null ? _ref : !menuId;
+            htmlMarker = (_ref = s.marker) != null ? _ref : s.marker = "default";
+            $menu = $("[data-quote-menu" + (feq(s.marker)) + "]");
+            menuId = $menu.id;
+            if (!menuId) {
+              menuId = "id_quote_menu_" + htmlMarker;
+              $menu.id = menuId;
+            }
             $this.contextMenu({
               menu: menuId
             });
-            $("a:[href = '#quote']", $this.contextMenu).attr("data-bind", "click: addQuote");
-            $("body").append("<script id='id_quote_template_" + s.marker + " type='text/html'>" + s.template + "</script>");
-            $dest = $("[data-quote-destination] = " + s.marker);
+            $("a:[href = '#quote']", $menu).attr("data-bind", "click: addQuote");
+            $("body").append("<script id='id_quote_template_" + htmlMarker + " type='text/html'>" + s.template + "</script>");
+            $dest = $("[data-quote-destination" + (feq(s.marker)) + "]");
             $dest.attr("data-bind", "template: {name : 'quoteTemplate', foreach: quotes, afterAdd: afterAddQuote}'");
             return $("body").append("<script type='text/javascript'>                function quote(text) {                    return {                        text: ko.observable(text),                        remove: function () {                            viewModel.quotes.remove(this);                        }                    };                }                var viewModel = {                    quotes: ko.observableArray([]),                    removeQuote: function (quote) {                        this.quotes.remove(quote);                    },                    addQuote: function () {                        this.quotes.push(new quote(document.selection));                    }                };                ko.applyBindings(viewModel);                function afterAddQuote(element) {                    if (viewModel.quotes().length > 1) {                        $(element).prependTo($(element.parentElement));                    }                }            </script>");
           });
