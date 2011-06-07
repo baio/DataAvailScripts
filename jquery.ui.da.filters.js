@@ -10,12 +10,14 @@
     }
     FilterPostPresenter.prototype.click = function() {
       var filter, format, i;
-      format = function(name, expr) {
+      format = function(target, name, expr) {
         if (expr.isFunc()) {
-          expr = expr();
+          expr = expr.call(target);
         }
-        if (expr.indexOf("@") === -1) {
-          expr = "@ " + expr;
+        if (!name) {
+          if (expr.indexOf("@") === -1 && (" " + expr).indexOf(" " + name + " ") === -1) {
+            expr = "@ " + expr;
+          }
         }
         return expr = expr.replace("@", name);
       };
@@ -25,7 +27,7 @@
         _results = [];
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           i = _ref[_i];
-          _results.push(format(i.name, i.expression));
+          _results.push(format(i.target, i.name, i.expression));
         }
         return _results;
       }).call(this)).join(" and ");
@@ -40,7 +42,8 @@
       inputSettings = {
         "marker": null,
         "name": null,
-        "expression": null
+        "expression": null,
+        "target": null
       };
       settings = {
         "marker": null,
@@ -87,7 +90,9 @@
           });
         },
         click: function() {
-          return $(this).data("FilterPost").presenter.click();
+          var data;
+          data = $(this).data("FilterPost");
+          return data.presenter.click();
         },
         inputs: function() {
           var e, format, s, _i, _len, _ref, _results;
@@ -111,6 +116,7 @@
             if (!s.expression) {
               s.expression = $this.val;
             }
+            s.target = $this;
             return s;
           };
           s = $.extend({}, inputSettings);

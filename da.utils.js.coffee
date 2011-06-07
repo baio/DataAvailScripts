@@ -3,4 +3,4 @@ String::trim = ->
     a.replace /\s+$/, ""
 
 Object::isFunc = ->
-    @ is null or @ is undefined
+    typeof(@) == "function"

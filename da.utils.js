@@ -5,6 +5,6 @@
     return a.replace(/\s+$/, "");
   };
   Object.prototype.isFunc = function() {
-    return this === null || this === void 0;
+    return typeof this === "function";
   };
 }).call(this);

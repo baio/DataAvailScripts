@@ -12,17 +12,19 @@ class FilterPostPresenter
 
     click: ->
         #if expression is function get value of it
-        #if not contains @ append @ to start
+        #if Name != null
+            #if not contains @ and not contains Name - append @ to start
         #if not started with [ and | or ] insert [ and ]
         #replace @->name
         #glue all with and
         #remove first and | or
-        format = (name, expr) ->
-             expr = expr() if expr.isFunc()
-             expr = "@ " + expr if expr.indexOf("@") == -1
+        format = (target, name, expr) ->
+             expr = expr.call(target) if expr.isFunc()
+             if !name
+                expr = "@ " + expr if expr.indexOf("@") == -1 && (" " + expr).indexOf(" #{name} ") == -1
              expr = expr.replace "@", name
 
-        filter = (format i.name, i.expression for i in @inputs)
+        filter = (format i.target, i.name, i.expression for i in @inputs)
             .join(" and ")
 
         filter = filter.trim("or").trim("and")
@@ -37,7 +39,9 @@ $.fn.extend
 
         "name" : null,
 
-        "expression" : null
+        "expression" : null,
+
+        "target" : null
 
     settings =
         "marker" : null,
@@ -87,7 +91,8 @@ $.fn.extend
                  $this.removeData "FilterPost"
 
         click: ->
-            $(@).data("FilterPost").presenter.click()
+            data = $(@).data "FilterPost"
+            data.presenter.click()
 
         inputs: ->
             format = ($this, s) ->
@@ -112,6 +117,9 @@ $.fn.extend
 
                     if !s.expression
                         s.expression = $this.val
+
+                    s.target = $this
+
                     s
 
             s = $.extend {}, inputSettings
