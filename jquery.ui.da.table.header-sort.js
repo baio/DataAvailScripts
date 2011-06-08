@@ -1,5 +1,5 @@
 (function() {
-  ﻿;  var $, TableHeaderSortPresenter;
+  var $, TableHeaderSortPresenter;
   $ = jQuery;
   TableHeaderSortPresenter = (function() {
     var settings;

@@ -12,12 +12,12 @@
       var filter, filterVals, format, formatVal, i;
       format = function(target, name, val, expr) {
         if (expr.indexOf("$val") !== -1) {
-          if (val.isFunc()) {
+          if (window.da_isFunc(val)) {
             val = val.call(target);
           }
           return expr.replace("$val", val);
         }
-        if (expr.isFunc()) {
+        if (window.da_isFunc(expr)) {
           expr = expr.call(target);
         }
         if (name) {
@@ -29,7 +29,7 @@
       };
       formatVal = function(target, name, val, expr) {
         if (expr.indexOf("$val") !== -1) {
-          if (val.isFunc()) {
+          if (window.da_isFunc(val)) {
             val = val.call(target);
           }
           if (name) {
@@ -58,7 +58,7 @@
         }
         return _results;
       }).call(this)).join(",");
-      filter = filter.trim("or").trim("and");
+      filter = filter.da_trim("or").da_trim("and");
       return window.location = "" + this.settings.callbackUrl + "?$filter=" + filter + "&filter_val=" + filterVals;
     };
     return FilterPostPresenter;

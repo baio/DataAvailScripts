@@ -24,17 +24,17 @@ class FilterPostPresenter
         format = (target, name, val, expr) ->
 
              if expr.indexOf("$val") != -1
-                val = val.call(target) if val.isFunc()
+                val = val.call(target) if window.da_isFunc val
                 return expr.replace "$val", val
 
-             expr = expr.call(target) if expr.isFunc()
+             expr = expr.call(target) if window.da_isFunc expr
              if name
                 expr = "@ " + expr if expr.indexOf("@") == -1 && (" " + expr).indexOf(" #{name} ") == -1
                 expr = expr.replace "@", name
 
         formatVal = (target, name, val, expr) ->
              if expr.indexOf("$val") != -1
-                val = val.call(target) if val.isFunc()
+                val = val.call(target) if window.da_isFunc val
                 val = name + ":" + val if name
                 val
                 
@@ -44,7 +44,7 @@ class FilterPostPresenter
         filterVals = (formatVal i.target, i.name, i.value, i.expression for i in @inputs)
             .join(",")
 
-        filter = filter.trim("or").trim("and")
+        filter = filter.da_trim("or").da_trim("and")
 
         window.location =  "#{@settings.callbackUrl}?$filter=#{filter}&filter_val=#{filterVals}"
 
