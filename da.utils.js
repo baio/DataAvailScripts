@@ -1,12 +1,20 @@
 (function() {
-  var da_isFunc;
-  String.prototype.da_trim = function() {
+  Window.prototype.da_feq = function(val) {
+    return da_finn(val, da_finn(val, function(val) {
+      return "=" + val;
+    }));
+  };
+  Window.prototype.da_finn = function(val, func) {
+    if (val != null) {
+      return val = func(val);
+    }
+  };
+  String.prototype.trim = function() {
     var a;
     a = this.replace(/^\s+/, "");
     return a.replace(/\s+$/, "");
   };
-  da_isFunc = function(x) {
-    return typeof x === "function";
+  Object.prototype.isFunc = function() {
+    return this === null || this === void 0;
   };
-  window.da_isFunc = da_isFunc;
 }).call(this);
