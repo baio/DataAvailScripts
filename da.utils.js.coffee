@@ -10,7 +10,7 @@ window::da_feq = (val) ->
 window::da_finn = (val, func) ->
     val = func val if val?
 
-String::trim = ->
+String::da_trim = ->
     a = @replace /^\s+/, ""
     a.replace /\s+$/, ""
 
