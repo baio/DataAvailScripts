@@ -11,7 +11,15 @@ class FilterPostPresenter
     constructor: (@settings, @inputs) ->
 
     click: ->
+        valExpr = (target, expr, val)->
+            if expr.indexOf("$val") != -1
+                if !val then return ""
+                if val.match /^[0-9a-zA-Z]+$/ then return expr.replace "$val", val
+                return val
+            null
+
         #if expression contains $val (if expression contains $value it should be full qualified expression)
+        #and expression must meet [a-zA-Z0-9]
             #replace $value with value or value() if function
         #else
             #if expression is function get value of it
@@ -22,27 +30,22 @@ class FilterPostPresenter
             #glue all with and
             #remove first and | or
         format = (target, name, val, expr) ->
-
-             if expr.indexOf("$val") != -1
-                val = val.call(target) if window.da_isFunc val
-                return expr.replace "$val", val
+             val = val.call(target) if window.da_isFunc val
+             v = valExpr target, expr, val
+             if v != null
+                return  fv : v, v : val
 
              expr = expr.call(target) if window.da_isFunc expr
              if name
                 expr = "@ " + expr if expr.indexOf("@") == -1 && (" " + expr).indexOf(" #{name} ") == -1
                 expr = expr.replace "@", name
+             fv : expr, v : if expr.indexOf("$") == 0 then null else expr
 
-        formatVal = (target, name, val, expr) ->
-             if expr.indexOf("$val") != -1
-                val = val.call(target) if window.da_isFunc val
-                val = name + ":" + val if name
-                val
-                
-        filter = (format i.target, i.name, i.value, i.expression for i in @inputs)
-            .join(" and ")
+        r = (format i.target, i.name, i.value, i.expression for i in @inputs)
 
-        filterVals = (formatVal i.target, i.name, i.value, i.expression for i in @inputs)
-            .join(",")
+        filter = (i.fv for i in r).join " and "
+
+        filterVals = (i.v for i in r).join ","
 
         filter = filter.da_trim("or").da_trim("and")
 

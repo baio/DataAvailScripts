@@ -9,13 +9,30 @@
       this.inputs = inputs;
     }
     FilterPostPresenter.prototype.click = function() {
-      var filter, filterVals, format, formatVal, i;
-      format = function(target, name, val, expr) {
+      var filter, filterVals, format, i, r, valExpr;
+      valExpr = function(target, expr, val) {
         if (expr.indexOf("$val") !== -1) {
-          if (window.da_isFunc(val)) {
-            val = val.call(target);
+          if (!val) {
+            return "";
           }
-          return expr.replace("$val", val);
+          if (val.match(/^[0-9a-zA-Z]+$/)) {
+            return expr.replace("$val", val);
+          }
+          return val;
+        }
+        return null;
+      };
+      format = function(target, name, val, expr) {
+        var v;
+        if (window.da_isFunc(val)) {
+          val = val.call(target);
+        }
+        v = valExpr(target, expr, val);
+        if (v !== null) {
+          return {
+            fv: v,
+            v: val
+          };
         }
         if (window.da_isFunc(expr)) {
           expr = expr.call(target);
@@ -24,21 +41,14 @@
           if (expr.indexOf("@") === -1 && (" " + expr).indexOf(" " + name + " ") === -1) {
             expr = "@ " + expr;
           }
-          return expr = expr.replace("@", name);
+          expr = expr.replace("@", name);
         }
+        return {
+          fv: expr,
+          v: expr.indexOf("$") === 0 ? null : expr
+        };
       };
-      formatVal = function(target, name, val, expr) {
-        if (expr.indexOf("$val") !== -1) {
-          if (window.da_isFunc(val)) {
-            val = val.call(target);
-          }
-          if (name) {
-            val = name + ":" + val;
-          }
-          return val;
-        }
-      };
-      filter = ((function() {
+      r = (function() {
         var _i, _len, _ref, _results;
         _ref = this.inputs;
         _results = [];
@@ -47,17 +57,25 @@
           _results.push(format(i.target, i.name, i.value, i.expression));
         }
         return _results;
-      }).call(this)).join(" and ");
-      filterVals = ((function() {
-        var _i, _len, _ref, _results;
-        _ref = this.inputs;
+      }).call(this);
+      filter = ((function() {
+        var _i, _len, _results;
         _results = [];
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          i = _ref[_i];
-          _results.push(formatVal(i.target, i.name, i.value, i.expression));
+        for (_i = 0, _len = r.length; _i < _len; _i++) {
+          i = r[_i];
+          _results.push(i.fv);
         }
         return _results;
-      }).call(this)).join(",");
+      })()).join(" and ");
+      filterVals = ((function() {
+        var _i, _len, _results;
+        _results = [];
+        for (_i = 0, _len = r.length; _i < _len; _i++) {
+          i = r[_i];
+          _results.push(i.v);
+        }
+        return _results;
+      })()).join(",");
       filter = filter.da_trim("or").da_trim("and");
       return window.location = "" + this.settings.callbackUrl + "?$filter=" + filter + "&filter_val=" + filterVals;
     };
