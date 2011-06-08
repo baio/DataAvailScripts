@@ -3,16 +3,19 @@
 #attach them to the window object.
 
 #return null if null empty, =val otherwise
-Window::da_feq = (val) ->
+window::da_feq = (val) ->
     da_finn val, da_finn(val, (val) -> "=#{val}" )
 
 #return null if null empty, func(val) otherwise
-Window::da_finn = (val, func) ->
+window::da_finn = (val, func) ->
     val = func val if val?
 
 String::trim = ->
     a = @replace /^\s+/, ""
     a.replace /\s+$/, ""
 
-Object::isFunc = ->
-    @ is null or @ is undefined
+##shii can't extend Object jQuery begins throw exceptions WTF?!
+da_isFunc = (x)->
+    typeof(x) == "function"
+
+window.da_isFunc = da_isFunc
