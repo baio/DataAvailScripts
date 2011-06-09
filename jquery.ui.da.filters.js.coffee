@@ -14,9 +14,12 @@ class FilterPostPresenter
         valExpr = (target, expr, val)->
             if expr.indexOf("$val") != -1
                 if !val then return ""
-                if val.match /^[0-9a-zA-Z]+$/ then return expr.replace "$val", val
+                if val.match /^[0-9a-zA-Zа-яА-Я]+$/ then return expr.replace "$val", val
                 return val
             null
+
+        getFilterVal = (name, val)->
+            if name and val then name+":"+val else val
 
         #if expression contains $val (if expression contains $value it should be full qualified expression)
         #and expression must meet [a-zA-Z0-9]
@@ -30,22 +33,21 @@ class FilterPostPresenter
             #glue all with and
             #remove first and | or
         format = (target, name, val, expr) ->
+             expr = expr.call(target) if window.da_isFunc expr
              val = val.call(target) if window.da_isFunc val
+             if name
+                #expr = "@ " + expr if expr.indexOf("@") == -1 && (" " + expr).indexOf(" #{name} ") == -1
+                expr = expr.replace "@", name
              v = valExpr target, expr, val
              if v != null
-                return  fv : v, v : val
-
-             expr = expr.call(target) if window.da_isFunc expr
-             if name
-                expr = "@ " + expr if expr.indexOf("@") == -1 && (" " + expr).indexOf(" #{name} ") == -1
-                expr = expr.replace "@", name
-             fv : expr, v : if expr.indexOf("$") == 0 then null else expr
+                return  fv : v, v : getFilterVal name, val
+             fv : expr, v : getFilterVal(name, if expr.indexOf("$") == 0 then null else expr)
 
         r = (format i.target, i.name, i.value, i.expression for i in @inputs)
 
-        filter = (i.fv for i in r).join " and "
+        filter = ($.grep (i.fv for i in r), (p) -> p).join " and "
 
-        filterVals = (i.v for i in r).join ","
+        filterVals = ($.grep (i.v for i in r), (p) -> p).join()
 
         filter = filter.da_trim("or").da_trim("and")
 
@@ -118,7 +120,9 @@ $.fn.extend
             data.presenter.click()
 
         inputs: (marker) ->
-            format = ($this, s) ->
+            format = ($this, settings) ->
+
+                    s = $.extend {}, settings
 
                     attr = $this.attr "data-filter-input"
 
@@ -150,9 +154,7 @@ $.fn.extend
 
                     s
 
-            s = $.extend {}, inputSettings
-
-            format $(e), s for e in $("[data-filter-input#{if marker then "=" + marker else ""}]")
+            format $(e), inputSettings for e in $("[data-filter-input#{if marker then "=" + marker else ""}]")
 
         }
 

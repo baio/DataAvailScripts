@@ -3,12 +3,16 @@
 #attach them to the window object.
 
 #return null if null empty, =val otherwise
-window::da_feq = (val) ->
+da_feq = (val) ->
     da_finn val, da_finn(val, (val) -> "=#{val}" )
 
+window.da_feq = da_feq
+
 #return null if null empty, func(val) otherwise
-window::da_finn = (val, func) ->
+da_finn = (val, func) ->
     val = func val if val?
+
+window.da_finn = da_finn
 
 String::da_trim = ->
     a = @replace /^\s+/, ""

@@ -1,20 +1,24 @@
 (function() {
-  Window.prototype.da_feq = function(val) {
+  var da_feq, da_finn, da_isFunc;
+  da_feq = function(val) {
     return da_finn(val, da_finn(val, function(val) {
       return "=" + val;
     }));
   };
-  Window.prototype.da_finn = function(val, func) {
+  window.da_feq = da_feq;
+  da_finn = function(val, func) {
     if (val != null) {
       return val = func(val);
     }
   };
-  String.prototype.trim = function() {
+  window.da_finn = da_finn;
+  String.prototype.da_trim = function() {
     var a;
     a = this.replace(/^\s+/, "");
     return a.replace(/\s+$/, "");
   };
-  Object.prototype.isFunc = function() {
-    return this === null || this === void 0;
+  da_isFunc = function(x) {
+    return typeof x === "function";
   };
+  window.da_isFunc = da_isFunc;
 }).call(this);

@@ -9,43 +9,47 @@
       this.inputs = inputs;
     }
     FilterPostPresenter.prototype.click = function() {
-      var filter, filterVals, format, i, r, valExpr;
+      var filter, filterVals, format, getFilterVal, i, r, valExpr;
       valExpr = function(target, expr, val) {
         if (expr.indexOf("$val") !== -1) {
           if (!val) {
             return "";
           }
-          if (val.match(/^[0-9a-zA-Z]+$/)) {
+          if (val.match(/^[0-9a-zA-Zа-яА-Я]+$/)) {
             return expr.replace("$val", val);
           }
           return val;
         }
         return null;
       };
+      getFilterVal = function(name, val) {
+        if (name && val) {
+          return name + ":" + val;
+        } else {
+          return val;
+        }
+      };
       format = function(target, name, val, expr) {
         var v;
+        if (window.da_isFunc(expr)) {
+          expr = expr.call(target);
+        }
         if (window.da_isFunc(val)) {
           val = val.call(target);
+        }
+        if (name) {
+          expr = expr.replace("@", name);
         }
         v = valExpr(target, expr, val);
         if (v !== null) {
           return {
             fv: v,
-            v: val
+            v: getFilterVal(name, val)
           };
-        }
-        if (window.da_isFunc(expr)) {
-          expr = expr.call(target);
-        }
-        if (name) {
-          if (expr.indexOf("@") === -1 && (" " + expr).indexOf(" " + name + " ") === -1) {
-            expr = "@ " + expr;
-          }
-          expr = expr.replace("@", name);
         }
         return {
           fv: expr,
-          v: expr.indexOf("$") === 0 ? null : expr
+          v: getFilterVal(name, expr.indexOf("$") === 0 ? null : expr)
         };
       };
       r = (function() {
@@ -58,7 +62,7 @@
         }
         return _results;
       }).call(this);
-      filter = ((function() {
+      filter = ($.grep((function() {
         var _i, _len, _results;
         _results = [];
         for (_i = 0, _len = r.length; _i < _len; _i++) {
@@ -66,8 +70,10 @@
           _results.push(i.fv);
         }
         return _results;
-      })()).join(" and ");
-      filterVals = ((function() {
+      })(), function(p) {
+        return p;
+      })).join(" and ");
+      filterVals = ($.grep((function() {
         var _i, _len, _results;
         _results = [];
         for (_i = 0, _len = r.length; _i < _len; _i++) {
@@ -75,7 +81,9 @@
           _results.push(i.v);
         }
         return _results;
-      })()).join(",");
+      })(), function(p) {
+        return p;
+      })).join();
       filter = filter.da_trim("or").da_trim("and");
       return window.location = "" + this.settings.callbackUrl + "?$filter=" + filter + "&filter_val=" + filterVals;
     };
@@ -144,9 +152,10 @@
           return data.presenter.click();
         },
         inputs: function(marker) {
-          var e, format, s, _i, _len, _ref, _results;
-          format = function($this, s) {
-            var attr;
+          var e, format, _i, _len, _ref, _results;
+          format = function($this, settings) {
+            var attr, s;
+            s = $.extend({}, settings);
             attr = $this.attr("data-filter-input");
             if (attr) {
               s.marker = attr;
@@ -172,12 +181,11 @@
             s.target = $this;
             return s;
           };
-          s = $.extend({}, inputSettings);
           _ref = $("[data-filter-input" + (marker ? "=" + marker : "") + "]");
           _results = [];
           for (_i = 0, _len = _ref.length; _i < _len; _i++) {
             e = _ref[_i];
-            _results.push(format($(e), s));
+            _results.push(format($(e), inputSettings));
           }
           return _results;
         }
