@@ -14,7 +14,7 @@ class FilterPostPresenter
         valExpr = (target, expr, val)->
             if expr.indexOf("$val") != -1
                 if !val then return ""
-                if val.match /^[0-9a-zA-Zа-яА-Я]+$/ then return expr.replace "$val", val
+                if val.match /^[0-9a-zA-Zа-яА-Я]+$/ then return expr.replace /\$val/gi, val
                 return val
             null
 
@@ -35,11 +35,10 @@ class FilterPostPresenter
         format = (target, name, val, expr) ->
              expr = expr.call(target) if window.da_isFunc expr
              val = val.call(target) if window.da_isFunc val
-             if name
-                #expr = "@ " + expr if expr.indexOf("@") == -1 && (" " + expr).indexOf(" #{name} ") == -1
-                expr = expr.replace "@", name
+             expr = expr.replace(/@/gi, name) if name
              v = valExpr target, expr, val
              if v != null
+                v = v.replace(/@/gi, name) if name
                 return  fv : v, v : getFilterVal name, val
              fv : expr, v : getFilterVal(name, if expr.indexOf("$") == 0 then null else expr)
 

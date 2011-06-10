@@ -16,7 +16,7 @@
             return "";
           }
           if (val.match(/^[0-9a-zA-Zа-яА-Я]+$/)) {
-            return expr.replace("$val", val);
+            return expr.replace(/\$val/gi, val);
           }
           return val;
         }
@@ -38,10 +38,13 @@
           val = val.call(target);
         }
         if (name) {
-          expr = expr.replace("@", name);
+          expr = expr.replace(/@/gi, name);
         }
         v = valExpr(target, expr, val);
         if (v !== null) {
+          if (name) {
+            v = v.replace(/@/gi, name);
+          }
           return {
             fv: v,
             v: getFilterVal(name, val)
