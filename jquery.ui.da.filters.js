@@ -31,10 +31,10 @@
       };
       format = function(target, name, val, expr) {
         var v;
-        if (window.da_isFunc(expr)) {
+        if ($.isFunction(expr)) {
           expr = expr.call(target);
         }
-        if (window.da_isFunc(val)) {
+        if ($.isFunction(val)) {
           val = val.call(target);
         }
         if (name) {
@@ -112,7 +112,7 @@
             $.extend(settings, options);
           }
           return this.each(function() {
-            var $this, attr, data, s;
+            var $this, attr, data, s, _ref;
             s = $.extend({}, settings);
             $this = $(this);
             attr = $this.attr("data-filter-post");
@@ -123,11 +123,9 @@
             if (attr) {
               s.callbackUrl = attr;
             }
+            (_ref = s.callbackUrl) != null ? _ref : s.callbackUrl = window.location.pathname;
             if (!s.marker) {
               throw "marker must be defined";
-            }
-            if (!s.callbackUrl) {
-              throw "callbackUrl must be defined";
             }
             data = $this.data("FilterPost");
             $this.bind("click.FilterPost", methods.click);
@@ -171,10 +169,6 @@
             if (attr) {
               s.expression = attr;
             }
-            /*
-            if !s.name
-                throw "input name must be defined"
-            */
             if (!s.expression) {
               s.expression = $this.val;
             }

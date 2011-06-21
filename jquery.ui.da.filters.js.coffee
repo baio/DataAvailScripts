@@ -33,8 +33,8 @@ class FilterPostPresenter
             #glue all with and
             #remove first and | or
         format = (target, name, val, expr) ->
-             expr = expr.call(target) if window.da_isFunc expr
-             val = val.call(target) if window.da_isFunc val
+             expr = expr.call(target) if $.isFunction expr
+             val = val.call(target) if $.isFunction val
              expr = expr.replace(/@/gi, name) if name
              v = valExpr target, expr, val
              if v != null
@@ -93,11 +93,10 @@ $.fn.extend
                 if attr
                     s.callbackUrl = attr
 
+                s.callbackUrl ?= window.location.pathname
+
                 if !s.marker
                     throw "marker must be defined"
-
-                if !s.callbackUrl
-                    throw "callbackUrl must be defined"
 
                 data = $this.data "FilterPost"
 
@@ -137,11 +136,6 @@ $.fn.extend
 
                     if attr
                         s.expression = attr
-
-                    ###
-                    if !s.name
-                        throw "input name must be defined"
-                    ###
 
                     if !s.expression
                         s.expression = $this.val

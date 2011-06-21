@@ -4,22 +4,29 @@
 
 #return null if null empty, =val otherwise
 da_feq = (val) ->
-    da_finn val, da_finn(val, (val) -> "=#{val}" )
+    da_finn val, (x) -> "=#{x}"
 
 window.da_feq = da_feq
 
-#return null if null empty, func(val) otherwise
+#return null if val undefined, func(val) otherwise
 da_finn = (val, func) ->
-    val = func val if val?
+    val = if val then func(val) else null
 
 window.da_finn = da_finn
+
+da_selection = ->
+  txt = ""
+  if window.getSelection
+    txt = window.getSelection()
+  else if document.getSelection
+    txt = document.getSelection()
+  else if document.selection
+    txt = document.selection.createRange().text
+
+  txt.toString()
+
+window.da_selection = da_selection
 
 String::da_trim = ->
     a = @replace /^\s+/, ""
     a.replace /\s+$/, ""
-
-##shii can't extend Object jQuery begins throw exceptions WTF?!
-da_isFunc = (x)->
-    typeof(x) == "function"
-
-window.da_isFunc = da_isFunc

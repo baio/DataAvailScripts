@@ -37,21 +37,27 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="copy.txt" />
     <Content Include="da.utils.js" />
     <Content Include="jquery.ui.da.filters.js" />
     <Content Include="jquery.ui.da.table.header-sort.js" />
+    <Content Include="jquery.ui.da.textBox.css" />
+    <Content Include="jquery.ui.da.textBox.js" />
     <None Include="da.utils.js.coffee" />
     <None Include="jquery.ui.da.filters.js.coffee" />
     <None Include="jquery.ui.da.table.header-sort.js.coffee" />
+    <None Include="jquery.ui.da.textBox.js.coffee" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>copy $(ProjectDir)jquery.ui.da.table.header-sort.js c:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\jquery.ui.da.table.header-sort.js
-copy $(ProjectDir)jquery.ui.da.filters.js c:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\jquery.ui.da.filters.js
-copy $(ProjectDir)da.utils.js c:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\da.utils.js</PreBuildEvent>
+    <PreBuildEvent>copy $(ProjectDir)jquery.ui.da.table.header-sort.js C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\jquery.ui.da.table.header-sort.js
+copy $(ProjectDir)jquery.ui.da.filters.js C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\jquery.ui.da.filters.js
+copy $(ProjectDir)da.utils.js C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\da.utils.js
+copy $(ProjectDir)jquery.ui.da.textBox.js C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\jquery.ui.da.textBox.js
+copy $(ProjectDir)jquery.ui.da.textBox.css C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Content\jquery.ui.da.textBox.css</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
