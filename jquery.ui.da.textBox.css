@@ -1,0 +1,30 @@
+.da-counter-label
+{
+    right: 0;
+    bottom: 0;
+    width: 200px;
+    height: 20px;
+    position: absolute;
+    display: block;
+    cursor: pointer;
+    color: #3333FF;
+    background-color: #CCFF99;
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 3px;
+    text-shadow: none;
+    z-index: 1;
+}
+
+.da-counter-label-warn
+{
+    color: red;
+    background-color: yellow;
+}
+
+.da-counter-label-err
+{
+    color: yellow;
+    background-color: red;
+    font-weight: bold;
+}

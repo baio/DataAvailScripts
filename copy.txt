@@ -1,0 +1,14 @@
+﻿copy $(ProjectDir)jquery.ui.da.table.header-sort.js c:\vs\Piterskie\Piterskie.WebApp\Scripts\jquery.ui.da.table.header-sort.js
+copy $(ProjectDir)jquery.ui.da.filters.js c:\vs\Piterskie\Piterskie.WebApp\Scripts\jquery.ui.da.filters.js
+copy $(ProjectDir)da.utils.js c:\vs\Piterskie\Piterskie.WebApp\Scripts\da.utils.js
+copy $(ProjectDir)jquery.ui.da.textBox.js c:\vs\Piterskie\Piterskie.WebApp\Scripts\jquery.ui.da.textBox.js
+copy $(ProjectDir)jquery.ui.da.textBox.css c:\vs\Piterskie\Piterskie.WebApp\Content\jquery.ui.da.textBox.css
+
+
+copy $(ProjectDir)jquery.ui.da.sort-list.js C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\jquery.ui.da.autoComplete.js
+copy $(ProjectDir)jquery.ui.da.sort-list.js C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\jquery.ui.da.sort-list.js
+copy $(ProjectDir)jquery.ui.da.table.header-sort.js C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\jquery.ui.da.table.header-sort.js
+copy $(ProjectDir)jquery.ui.da.filters.js C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\jquery.ui.da.filters.js
+copy $(ProjectDir)da.utils.js C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\da.utils.js
+copy $(ProjectDir)jquery.ui.da.textBox.js C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\jquery.ui.da.textBox.js
+copy $(ProjectDir)jquery.ui.da.textBox.css C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Content\jquery.ui.da.textBox.css
