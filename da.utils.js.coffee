@@ -1,6 +1,6 @@
 #The usual caveats about CoffeeScript apply — your inline scripts
 #will run within a closure wrapper, so if you want to expose global variables or functions,
-#attach them to the window object.
+#attach them to the window object
 
 #return null if null empty, =val otherwise
 da_feq = (val) ->
