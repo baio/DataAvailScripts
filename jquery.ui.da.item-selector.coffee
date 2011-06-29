@@ -25,6 +25,7 @@ class itemSelectorPresenter
 
     click: ->
         src = @settings.url
+        window.da_md_cr_prr =  s : @settings, d : null
         $.modal "<iframe src='#{src}' height='100%' width='100%' style='border:0'>",
                 containerCss :
 
@@ -32,9 +33,23 @@ class itemSelectorPresenter
 
                     width:"90%"
 
-                    opacity:50
+                    opacity:20
 
                 overlayClose : true
+
+                overlayCss: {backgroundColor: "blue"}
+
+                onShow: (dialog) ->
+                    window.da_md_cr_prr.d = @
+                    dialog.data.find(">:first-child").load ->
+                        $("table.item-selector-list > :not(thead) > tr", this.contentDocument).click (e, ui)->
+                            wp = window.parent
+                            $t = $ @
+                            s = window.da_md_cr_prr.s
+                            wp.$("#" + s.parentValFieldId).val $t.attr("data-val")
+                            wp.$("#" + s.parentLabelFieldId).val $t.attr("data-label")
+                            window.da_md_cr_prr.d.close()
+                            window.da_md_cr_prr = null
 
 $.fn.extend
   itemSelector: (method) ->
@@ -89,8 +104,7 @@ $.fn.extend
                 if attr
                     s.parentLabelFieldId = attr
 
-                if s.baseUrl
-                    s.url = "#{s.baseUrl}/#{s.url}"
+                s.url = [s.baseUrl, s.url].da_joinUrls()
 
                 if !s.url
                     throw "url must be defined"

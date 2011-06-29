@@ -25,13 +25,37 @@
     itemSelectorPresenter.prototype.click = function() {
       var src;
       src = this.settings.url;
+      window.da_md_cr_prr = {
+        s: this.settings,
+        d: null
+      };
       return $.modal("<iframe src='" + src + "' height='100%' width='100%' style='border:0'>", {
         containerCss: {
           height: "90%",
           width: "90%",
-          opacity: 50
+          opacity: 20
         },
-        overlayClose: true
+        overlayClose: true,
+        overlayCss: {
+          backgroundColor: "blue"
+        },
+        onShow: function(dialog) {
+          window.da_md_cr_prr.d = this;
+          return dialog.data.find(">:first-child").load(function() {
+            this.contentDocument.prr = this;
+            return $("table.item-selector-list > :not(thead) > tr", this.contentDocument).click(function(e, ui) {
+              var $t, s, wp;
+              wp = window.parent;
+              $t = $(this);
+              s = window.da_md_cr_prr.s;
+              wp.$("#" + s.parentValFieldId).val($t.attr("data-val"));
+              wp.$("#" + s.parentLabelFieldId).val($t.attr("data-label"));
+              wp.$("#" + s.parentLabelFieldId).val($t.attr("data-label"));
+              window.da_md_cr_prr.d.close();
+              return window.da_md_cr_prr = null;
+            });
+          });
+        }
       });
     };
     return itemSelectorPresenter;
@@ -76,9 +100,7 @@
             if (attr) {
               s.parentLabelFieldId = attr;
             }
-            if (s.baseUrl) {
-              s.url = "" + s.baseUrl + "/" + s.url;
-            }
+            s.url = [s.baseUrl, s.url].da_joinUrls();
             if (!s.url) {
               throw "url must be defined";
             }

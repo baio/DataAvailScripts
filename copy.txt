@@ -4,8 +4,13 @@ copy $(ProjectDir)da.utils.js c:\vs\Piterskie\Piterskie.WebApp\Scripts\da.utils.
 copy $(ProjectDir)jquery.ui.da.textBox.js c:\vs\Piterskie\Piterskie.WebApp\Scripts\jquery.ui.da.textBox.js
 copy $(ProjectDir)jquery.ui.da.textBox.css c:\vs\Piterskie\Piterskie.WebApp\Content\jquery.ui.da.textBox.css
 
+///dependencies
+copy $(ProjectDir)Dependencies\jquery.simplemodal-1.4.1.js C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\Dependencies\jquery.simplemodal-1.4.1.min.js
+copy $(ProjectDir)Dependencies\x.png C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\Dependencies\x.png
+copy $(ProjectDir)Dependencies\jquery.simplemodal.css C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\Dependencies\jquery.simplemodal.css
 
-copy $(ProjectDir)jquery.ui.da.sort-list.js C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\jquery.ui.da.autoComplete.js
+copy $(ProjectDir)jquery.ui.da.autoComplete.js C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\jquery.ui.da.autoComplete.js
+copy $(ProjectDir)jquery.ui.da.item-selector.js C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\jquery.ui.da.item-selector.js
 copy $(ProjectDir)jquery.ui.da.sort-list.js C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\jquery.ui.da.sort-list.js
 copy $(ProjectDir)jquery.ui.da.table.header-sort.js C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\jquery.ui.da.table.header-sort.js
 copy $(ProjectDir)jquery.ui.da.filters.js C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\jquery.ui.da.filters.js

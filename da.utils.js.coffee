@@ -27,6 +27,26 @@ da_selection = ->
 
 window.da_selection = da_selection
 
-String::da_trim = ->
-    a = @replace /^\s+/, ""
-    a.replace /\s+$/, ""
+String::da_trim = (str, start)->
+
+    str ?= "\s"
+
+    a = @
+
+    if (start == true || not start?)
+        r = new RegExp "^#{str}+"
+        a = a.replace r, ""
+
+    if (start == false || not start?)
+        r = new RegExp "#{str}+$"
+        a = a.replace r, ""
+    
+    a.toString();
+
+Array::da_joinUrls = (joiner)->
+
+    s = @[0]?.da_trim '/', false
+    for i in @.slice 1
+        if i then s += '/' + i.da_trim '/', true
+
+    s

@@ -41,6 +41,7 @@
     <Content Include="da.utils.js" />
     <Content Include="jquery.ui.da.autoComplete.js" />
     <Content Include="jquery.ui.da.filters.js" />
+    <Content Include="jquery.ui.da.item-selector.js" />
     <Content Include="jquery.ui.da.sort-list.js" />
     <Content Include="jquery.ui.da.table.header-sort.js" />
     <Content Include="jquery.ui.da.textBox.css" />
@@ -48,6 +49,7 @@
     <None Include="da.utils.js.coffee" />
     <None Include="jquery.ui.da.autoComplete.js.coffee" />
     <None Include="jquery.ui.da.filters.js.coffee" />
+    <None Include="jquery.ui.da.item-selector.coffee" />
     <None Include="jquery.ui.da.sort-list.js.coffee" />
     <None Include="jquery.ui.da.table.header-sort.js.coffee" />
     <None Include="jquery.ui.da.textBox.js.coffee" />
@@ -57,13 +59,23 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>copy $(ProjectDir)jquery.ui.da.sort-list.js C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\jquery.ui.da.sort-list.js
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>copy $(ProjectDir)jquery.ui.da.sort-list.js C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\jquery.ui.da.sort-list.js
 copy $(ProjectDir)jquery.ui.da.table.header-sort.js C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\jquery.ui.da.table.header-sort.js
 copy $(ProjectDir)jquery.ui.da.filters.js C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\jquery.ui.da.filters.js
 copy $(ProjectDir)da.utils.js C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\da.utils.js
 copy $(ProjectDir)jquery.ui.da.textBox.js C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\jquery.ui.da.textBox.js
 copy $(ProjectDir)jquery.ui.da.textBox.css C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Content\jquery.ui.da.textBox.css
-copy $(ProjectDir)jquery.ui.da.autoComplete.js C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\jquery.ui.da.autoComplete.js</PreBuildEvent>
+copy $(ProjectDir)jquery.ui.da.autoComplete.js C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\jquery.ui.da.autoComplete.js
+copy $(ProjectDir)jquery.ui.da.item-selector.js C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\jquery.ui.da.item-selector.js
+
+copy $(ProjectDir)Dependencies\jquery.simplemodal-1.4.1.js C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\Dependencies\jquery.simplemodal-1.4.1.js
+copy $(ProjectDir)Dependencies\x.png C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\Dependencies\x.png
+copy $(ProjectDir)Dependencies\jquery.simplemodal.css C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\Dependencies\jquery.simplemodal.css
+</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

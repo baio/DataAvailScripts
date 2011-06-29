@@ -38,6 +38,23 @@ class autoCompletePresenter
 
     settings = null
 
+    constructor: (@$target, @settings) ->
+            if @settings.forTarget
+                @$forTarget =  $ "#" + @settings.forTarget
+
+            $target.autocomplete @getJQueryAutocompleteOptions()
+
+            $target.focus =>
+                if @$forTarget
+                    @oldVal = @$forTarget.val()
+
+            $target.change =>
+                if $forTarget and @oldVal == @$forTarget.val()
+                    #text changed but value not
+                    @forcedSearch = true;
+                    $target.autocomplete "search"
+
+
     getPresenter = (element)->
         $(element).data("autocomplete").presenter
 
@@ -77,21 +94,6 @@ class autoCompletePresenter
             $.ajax a
 
 
-    constructor: (@$target, @settings) ->
-            if @settings.forTarget
-                @$forTarget =  $ "#" + @settings.forTarget
-
-            $target.autocomplete @getJQueryAutocompleteOptions()
-
-            $target.focus =>
-                if @$forTarget
-                    @oldVal = @$forTarget.val()
-
-            $target.change =>
-                if $forTarget and @oldVal == @$forTarget.val()
-                    #text changed but value not
-                    @forcedSearch = true;
-                    $target.autocomplete "search"
 
     #Set value to the related id-value control (hidden input)
     setAutocompleteVal: (val) ->
@@ -218,8 +220,7 @@ $.fn.extend
                 if !s.valueField
                     throw "autocomplete.valueField must be defined"
 
-                if s.serverBaseUrl
-                    s.serverUrl = "#{s.serverBaseUrl}/#{s.serverUrl}"
+                s.serverUrl = [s.serverBaseUrl, s.serverUrl].da_joinUrls();
                     
                 if !s.displayField
                     s.displayField = s.valueField
