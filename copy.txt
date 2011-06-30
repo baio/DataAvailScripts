@@ -9,6 +9,7 @@ copy $(ProjectDir)Dependencies\jquery.simplemodal-1.4.1.js C:\vs\ITS.NetProject\
 copy $(ProjectDir)Dependencies\x.png C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\Dependencies\x.png
 copy $(ProjectDir)Dependencies\jquery.simplemodal.css C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\Dependencies\jquery.simplemodal.css
 
+copy $(ProjectDir)jquery.ui.da.date-picker.js C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\jquery.ui.da.date-picker.js
 copy $(ProjectDir)jquery.ui.da.autoComplete.js C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\jquery.ui.da.autoComplete.js
 copy $(ProjectDir)jquery.ui.da.item-selector.js C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\jquery.ui.da.item-selector.js
 copy $(ProjectDir)jquery.ui.da.sort-list.js C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\jquery.ui.da.sort-list.js
