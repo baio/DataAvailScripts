@@ -14,15 +14,15 @@ class ItemSorterPresenter
 
     click: ->
 
-        sortOrder = ""
-        sortName = @settings.columnName
+        order = ""
+        path = @settings.path
 
-        switch @settings.sortOrder
-            when "asc" then sortOrder = "desc"
-            when "desc" then sortName = "$reset"
-            else sortOrder = "asc"
+        switch @settings.order
+            when "asc" then order = "desc"
+            when "desc" then path = "$reset"
+            else order = "asc"
 
-        window.location = "#{@settings.callbackUrl}?$orderby=#{sortName}  #{sortOrder}"
+        window.location = "#{@settings.url}?$orderby=#{path}  #{order}"
 
 ###
 arguments could be passed through options or attributes:
@@ -31,15 +31,14 @@ data-table-header-sort-name and data-table-header-sort-order
 $.fn.extend
   itemSorter: (method) ->
 
-    settings = {
-        'callbackUrl' : null,
+    settings =
+        'url' : null
 
-        'columnName' : null,
+        'path' : null
 
-        'sortOrder' : "none", # none - not sorted, asc - order by ascend, desc - order by descend
+        'order' : "none" # none - not sorted, asc - order by ascend, desc - order by descend
 
         'delay' : 3000
-    }
 
     methods = {
         init: (options) ->
@@ -52,35 +51,37 @@ $.fn.extend
 
                 $this = $(@)
 
-                attr = $this.attr "data-table-header-sort-callback-url"
+                attr = $this.attr "data-item-sorter-url"
 
                 if attr
-                    s.callbackUrl = attr
+                    s.url = attr
 
-                s.callbackUrl ?= window.location.pathname
+                s.url ?= window.location.pathname
  
-                attr = $this.attr "data-table-header-sort-name"
+                attr = $this.attr "data-item-sorter-path"
                 
                 if attr
-                    s.columnName = attr
+                    s.path = attr
 
-                attr = $this.attr "data-table-header-sort-order"
+                attr = $this.attr "data-item-sorter-order"
 
                 if attr
-                    s.sortOrder = attr
+                    s.order = attr
 
-                if !s.callbackUrl
-                    throw "callbackUrl must be defined"
-                if !s.columnName
-                    throw "columnName must be defined"
-                if !s.sortOrder
-                    throw "sortOrder must be defined"
+                if !s.url
+                    throw "itemSorter.url must be defined"
+                if !s.path
+                    throw "itemSorter.path must be defined"
+                if !s.order
+                    throw "itemSorter.order must be defined"
 
+                ###
                 switch s.sortOrder
                     when "asc" then $this.text $this.text() + " [asc]"
                     when "desc" then $this.text $this.text() + " [desc]"
                     when "none" then
                     else throw "argument sortOrder must be asc, desc or none"
+                ###
 
                 data = $this.data "ItemSorter"
 

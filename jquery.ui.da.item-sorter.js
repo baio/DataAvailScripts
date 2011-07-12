@@ -7,20 +7,20 @@
       this.settings = settings;
     }
     ItemSorterPresenter.prototype.click = function() {
-      var sortName, sortOrder;
-      sortOrder = "";
-      sortName = this.settings.columnName;
-      switch (this.settings.sortOrder) {
+      var order, path;
+      order = "";
+      path = this.settings.path;
+      switch (this.settings.order) {
         case "asc":
-          sortOrder = "desc";
+          order = "desc";
           break;
         case "desc":
-          sortName = "$reset";
+          path = "$reset";
           break;
         default:
-          sortOrder = "asc";
+          order = "asc";
       }
-      return window.location = "" + this.settings.callbackUrl + "?$orderby=" + sortName + "  " + sortOrder;
+      return window.location = "" + this.settings.url + "?$orderby=" + path + "  " + order;
     };
     return ItemSorterPresenter;
   })();
@@ -32,9 +32,9 @@
     itemSorter: function(method) {
       var methods, settings;
       settings = {
-        'callbackUrl': null,
-        'columnName': null,
-        'sortOrder': "none",
+        'url': null,
+        'path': null,
+        'order': "none",
         'delay': 3000
       };
       methods = {
@@ -46,40 +46,35 @@
             var $this, attr, data, s, _ref;
             s = $.extend({}, settings);
             $this = $(this);
-            attr = $this.attr("data-table-header-sort-callback-url");
+            attr = $this.attr("data-item-sorter-url");
             if (attr) {
-              s.callbackUrl = attr;
+              s.url = attr;
             }
-            (_ref = s.callbackUrl) != null ? _ref : s.callbackUrl = window.location.pathname;
-            attr = $this.attr("data-table-header-sort-name");
+            (_ref = s.url) != null ? _ref : s.url = window.location.pathname;
+            attr = $this.attr("data-item-sorter-path");
             if (attr) {
-              s.columnName = attr;
+              s.path = attr;
             }
-            attr = $this.attr("data-table-header-sort-order");
+            attr = $this.attr("data-item-sorter-order");
             if (attr) {
-              s.sortOrder = attr;
+              s.order = attr;
             }
-            if (!s.callbackUrl) {
-              throw "callbackUrl must be defined";
+            if (!s.url) {
+              throw "itemSorter.url must be defined";
             }
-            if (!s.columnName) {
-              throw "columnName must be defined";
+            if (!s.path) {
+              throw "itemSorter.path must be defined";
             }
-            if (!s.sortOrder) {
-              throw "sortOrder must be defined";
+            if (!s.order) {
+              throw "itemSorter.order must be defined";
             }
-            switch (s.sortOrder) {
-              case "asc":
-                $this.text($this.text() + " [asc]");
-                break;
-              case "desc":
-                $this.text($this.text() + " [desc]");
-                break;
-              case "none":
-                break;
-              default:
-                throw "argument sortOrder must be asc, desc or none";
-            }
+            /*
+            switch s.sortOrder
+                when "asc" then $this.text $this.text() + " [asc]"
+                when "desc" then $this.text $this.text() + " [desc]"
+                when "none" then
+                else throw "argument sortOrder must be asc, desc or none"
+            */
             data = $this.data("ItemSorter");
             $this.bind("click.ItemSorter", methods.click);
             if (!data) {
