@@ -1,13 +1,12 @@
 (function() {
-  var $, TableHeaderSortPresenter;
-  $ = jQuery;
-  TableHeaderSortPresenter = (function() {
+  ﻿;  var ItemSorterPresenter;
+  ItemSorterPresenter = (function() {
     var settings;
     settings = null;
-    function TableHeaderSortPresenter(settings) {
+    function ItemSorterPresenter(settings) {
       this.settings = settings;
     }
-    TableHeaderSortPresenter.prototype.click = function() {
+    ItemSorterPresenter.prototype.click = function() {
       var sortName, sortOrder;
       sortOrder = "";
       sortName = this.settings.columnName;
@@ -23,14 +22,14 @@
       }
       return window.location = "" + this.settings.callbackUrl + "?$orderby=" + sortName + "  " + sortOrder;
     };
-    return TableHeaderSortPresenter;
+    return ItemSorterPresenter;
   })();
   /*
   arguments could be passed through options or attributes:
   data-table-header-sort-name and data-table-header-sort-order
   */
   $.fn.extend({
-    TableHeaderSort: function(method) {
+    itemSorter: function(method) {
       var methods, settings;
       settings = {
         'callbackUrl': null,
@@ -44,13 +43,14 @@
             $.extend(settings, options);
           }
           return this.each(function() {
-            var $this, attr, data, s;
+            var $this, attr, data, s, _ref;
             s = $.extend({}, settings);
             $this = $(this);
             attr = $this.attr("data-table-header-sort-callback-url");
             if (attr) {
               s.callbackUrl = attr;
             }
+            (_ref = s.callbackUrl) != null ? _ref : s.callbackUrl = window.location.pathname;
             attr = $this.attr("data-table-header-sort-name");
             if (attr) {
               s.columnName = attr;
@@ -80,12 +80,12 @@
               default:
                 throw "argument sortOrder must be asc, desc or none";
             }
-            data = $this.data("TableHeaderSort");
-            $this.bind("click.TableHeaderSort", methods.click);
+            data = $this.data("ItemSorter");
+            $this.bind("click.ItemSorter", methods.click);
             if (!data) {
-              return $this.data("TableHeaderSort", {
+              return $this.data("ItemSorter", {
                 target: $this,
-                presenter: new TableHeaderSortPresenter(s)
+                presenter: new ItemSorterPresenter(s)
               });
             }
           });
@@ -94,14 +94,14 @@
           return this.each(function() {
             var $this, data;
             $this = $(this);
-            data = $this.data("TableHeaderSort");
-            $this.unbind(".TableHeaderSort");
+            data = $this.data("ItemSorter");
+            $this.unbind(".ItemSorter");
             data.TableHeaderSort.remove();
-            return $this.removeData("TableHeaderSort");
+            return $this.removeData("ItemSorter");
           });
         },
         click: function() {
-          return $(this).data("TableHeaderSort").presenter.click();
+          return $(this).data("ItemSorter").presenter.click();
         }
       };
       if (methods[method]) {
@@ -109,7 +109,7 @@
       } else if (typeof method === 'object' || !method) {
         return methods.init.apply(this, arguments);
       } else {
-        return $.error("Method " + method + " does not exist on jQuery.TableHeaderSort");
+        return $.error("Method " + method + " does not exist on jQuery.ItemSorter");
       }
     }
   });

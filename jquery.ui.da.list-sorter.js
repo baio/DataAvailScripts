@@ -1,10 +1,10 @@
 (function() {
-  var SortListPresenter;
-  SortListPresenter = (function() {
-    function SortListPresenter(settings) {
+  var ListSorterPresenter;
+  ListSorterPresenter = (function() {
+    function ListSorterPresenter(settings) {
       this.settings = settings;
     }
-    SortListPresenter.prototype.change = function(val) {
+    ListSorterPresenter.prototype.change = function(val) {
       var sortName, sortOrder;
       sortOrder = "";
       if (val && val !== "$reset") {
@@ -24,10 +24,10 @@
       }
       return window.location = "" + this.settings.callbackUrl + "?$orderby=" + sortName + "  " + sortOrder;
     };
-    return SortListPresenter;
+    return ListSorterPresenter;
   })();
   $.fn.extend({
-    SortList: function(method) {
+    listSorter: function(method) {
       var methods, settings;
       settings = {
         'callbackUrl': null,
@@ -51,11 +51,11 @@
             if (attr) {
               s.order = attr;
             }
-            data = $this.data("SortList");
+            data = $this.data("ListSorter");
             if (!data) {
-              prr = new SortListPresenter(s);
-              $this.bind("change.SortList", methods.change);
-              return $this.data("SortList", {
+              prr = new ListSorterPresenter(s);
+              $this.bind("change.ListSorter", methods.change);
+              return $this.data("ListSorter", {
                 target: $this,
                 presenter: prr
               });
@@ -66,14 +66,13 @@
           return this.each(function() {
             var $this, data;
             $this = $(this);
-            data = $this.data("SortList");
-            $this.unbind(".SortList");
-            data.TableHeaderSort.remove();
-            return $this.removeData("SortList");
+            data = $this.data("ListSorter");
+            $this.unbind(".ListSorter");
+            return $this.removeData("ListSorter");
           });
         },
         change: function() {
-          return $(this).data("SortList").presenter.change($(this).val());
+          return $(this).data("ListSorter").presenter.change($(this).val());
         }
       };
       if (methods[method]) {
@@ -81,7 +80,7 @@
       } else if (typeof method === 'object' || !method) {
         return methods.init.apply(this, arguments);
       } else {
-        return $.error("Method " + method + " does not exist on jQuery.SortList");
+        return $.error("Method " + method + " does not exist on jQuery.ListSorter");
       }
     }
   });

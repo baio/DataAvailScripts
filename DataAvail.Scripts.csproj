@@ -39,22 +39,22 @@
   <ItemGroup>
     <Content Include="copy.txt" />
     <Content Include="da.utils.js" />
-    <Content Include="jquery.ui.da.autoComplete.js" />
+    <Content Include="jquery.ui.da.auto-complete.js" />
     <Content Include="jquery.ui.da.date-picker.js" />
-    <Content Include="jquery.ui.da.filters.js" />
+    <Content Include="jquery.ui.da.filter.js" />
     <Content Include="jquery.ui.da.item-selector.js" />
-    <Content Include="jquery.ui.da.sort-list.js" />
-    <Content Include="jquery.ui.da.table.header-sort.js" />
-    <Content Include="jquery.ui.da.textBox.css" />
-    <Content Include="jquery.ui.da.textBox.js" />
-    <None Include="da.utils.js.coffee" />
-    <None Include="jquery.ui.da.autoComplete.js.coffee" />
+    <Content Include="jquery.ui.da.item-sorter.js" />
+    <Content Include="jquery.ui.da.list-sorter.js" />
+    <Content Include="jquery.ui.da.text-box.css" />
+    <Content Include="jquery.ui.da.text-box.js" />
+    <None Include="da.utils.coffee" />
+    <None Include="jquery.ui.da.auto-complete.coffee" />
     <None Include="jquery.ui.da.date-picker.coffee" />
-    <None Include="jquery.ui.da.filters.js.coffee" />
+    <None Include="jquery.ui.da.filter.coffee" />
     <None Include="jquery.ui.da.item-selector.coffee" />
-    <None Include="jquery.ui.da.sort-list.js.coffee" />
-    <None Include="jquery.ui.da.table.header-sort.js.coffee" />
-    <None Include="jquery.ui.da.textBox.js.coffee" />
+    <None Include="jquery.ui.da.item-sorter.coffee" />
+    <None Include="jquery.ui.da.list-sorter.coffee" />
+    <None Include="jquery.ui.da.text-box.coffee" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

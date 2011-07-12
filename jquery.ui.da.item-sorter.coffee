@@ -6,9 +6,7 @@
 #http://docs.jquery.com/Plugins/Authoring
 #and http://stefangabos.ro/jquery/jquery-plugin-boilerplate/
 
-$ = jQuery
-
-class TableHeaderSortPresenter
+class ItemSorterPresenter
 
     settings = null
 
@@ -31,7 +29,7 @@ arguments could be passed through options or attributes:
 data-table-header-sort-name and data-table-header-sort-order
 ###
 $.fn.extend
-  TableHeaderSort: (method) ->
+  itemSorter: (method) ->
 
     settings = {
         'callbackUrl' : null,
@@ -59,6 +57,8 @@ $.fn.extend
                 if attr
                     s.callbackUrl = attr
 
+                s.callbackUrl ?= window.location.pathname
+ 
                 attr = $this.attr "data-table-header-sort-name"
                 
                 if attr
@@ -82,29 +82,29 @@ $.fn.extend
                     when "none" then
                     else throw "argument sortOrder must be asc, desc or none"
 
-                data = $this.data "TableHeaderSort"
+                data = $this.data "ItemSorter"
 
                 #bind events here
-                $this.bind "click.TableHeaderSort", methods.click
+                $this.bind "click.ItemSorter", methods.click
 
                 if !data
-                   $this.data "TableHeaderSort", {target: $this, presenter : new TableHeaderSortPresenter s}
+                   $this.data "ItemSorter", {target: $this, presenter : new ItemSorterPresenter s}
 
                                        
         destroy: ->
             @.each ->
 
                  $this = $(@)
-                 data = $this.data "TableHeaderSort"
+                 data = $this.data "ItemSorter"
 
                  #unbind events
-                 $this.unbind ".TableHeaderSort"
+                 $this.unbind ".ItemSorter"
                  #remove referenced data
                  data.TableHeaderSort.remove()
-                 $this.removeData "TableHeaderSort"
+                 $this.removeData "ItemSorter"
 
         click: ->
-            $(@).data("TableHeaderSort").presenter.click()
+            $(@).data("ItemSorter").presenter.click()
         }
 
     if  methods[method]
@@ -112,4 +112,4 @@ $.fn.extend
     else if typeof method == 'object' || ! method
         methods.init.apply this, arguments
     else
-        $.error "Method " +  method + " does not exist on jQuery.TableHeaderSort"
+        $.error "Method " +  method + " does not exist on jQuery.ItemSorter"

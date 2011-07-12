@@ -1,4 +1,4 @@
-class SortListPresenter
+class ListSorterPresenter
     constructor: (@settings)->
 
     change: (val)->
@@ -15,7 +15,7 @@ class SortListPresenter
         window.location = "#{@settings.callbackUrl}?$orderby=#{sortName}  #{sortOrder}"
 
 $.fn.extend
-  SortList: (method) ->
+  listSorter: (method) ->
 
     settings =
 
@@ -46,25 +46,25 @@ $.fn.extend
                 if attr
                     s.order = attr
 
-                data = $this.data "SortList"
+                data = $this.data "ListSorter"
 
                 if !data
-                   prr = new SortListPresenter s
+                   prr = new ListSorterPresenter s
 
-                   $this.bind "change.SortList", methods.change
+                   $this.bind "change.ListSorter", methods.change
 
-                   $this.data "SortList", {target: $this, presenter : prr}
+                   $this.data "ListSorter", {target: $this, presenter : prr}
 
         destroy: ->
             @.each ->
                  $this = $(@)
-                 data = $this.data "SortList"
-                 $this.unbind ".SortList"
-                 data.TableHeaderSort.remove()
-                 $this.removeData "SortList"
+                 data = $this.data "ListSorter"
+                 $this.unbind ".ListSorter"
+                 #data.ListSorter.remove()
+                 $this.removeData "ListSorter"
 
         change: ->
-            $(@).data("SortList").presenter.change $(this).val()
+            $(@).data("ListSorter").presenter.change $(this).val()
 
         }
 
@@ -73,4 +73,4 @@ $.fn.extend
     else if typeof method == 'object' || ! method
         methods.init.apply this, arguments
     else
-        $.error "Method " +  method + " does not exist on jQuery.SortList"
+        $.error "Method " +  method + " does not exist on jQuery.ListSorter"
