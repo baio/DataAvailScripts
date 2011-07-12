@@ -1,5 +1,5 @@
 (function() {
-  ﻿;  var ItemSorterPresenter;
+  var ItemSorterPresenter;
   ItemSorterPresenter = (function() {
     var settings;
     settings = null;

@@ -1,27 +1,29 @@
 class ListSorterPresenter
     constructor: (@settings)->
 
-    change: (val)->
-        sortOrder = ""
+    update: (val)->
+        order = ""
         if (val && val != "$reset")
-            sortName = val
+            path = val
             switch @settings.order
-                when "asc" then sortOrder = "desc"
-                when "desc" then sortName = "$reset"
-                else sortOrder = "asc"
+                when "asc" then order = "desc"
+                when "desc" then path = "$reset"
+                else order = "asc"
         else
-            sortName = "$reset"
+            path = "$reset"
 
-        window.location = "#{@settings.callbackUrl}?$orderby=#{sortName}  #{sortOrder}"
+        window.location = "#{@settings.url}?$orderby=#{path}  #{order}"
 
 $.fn.extend
   listSorter: (method) ->
 
     settings =
 
-        'callbackUrl' : null
+        url : null
 
-        'order' : "none"
+        order : "none"
+
+        autoUpdate : true
 
     methods = {
         init: (options) ->
@@ -32,28 +34,35 @@ $.fn.extend
             @.each ->
                 s = $.extend {}, settings
 
-                $this = $(@)
+                $t = $(@)
 
-                attr = $this.attr "data-sort-callback"
+                attr = $t.attr "data-list-sorter-url"
 
                 if attr
-                    s.callbackUrl = attr
+                    s.url = attr
 
-                s.callbackUrl ?= window.location.pathname
+                s.url ?= window.location.pathname
 
-                attr = $this.attr "data-sort-order"
+                attr = $t.attr "data-list-sorter-order"
 
                 if attr
                     s.order = attr
 
-                data = $this.data "ListSorter"
+                attr = $t.attr "data-list-auto-update"
+
+                if attr
+                    s.autoUpdate =  new Boolean attr
+
+                data = $t.data "ListSorter"
 
                 if !data
-                   prr = new ListSorterPresenter s
 
-                   $this.bind "change.ListSorter", methods.change
+                    prr = new ListSorterPresenter s
 
-                   $this.data "ListSorter", {target: $this, presenter : prr}
+                    if s.autoUpdate
+                        $t.bind "change.ListSorter", methods.update
+
+                    $t.data "ListSorter", {target: $t, presenter : prr}
 
         destroy: ->
             @.each ->
@@ -63,8 +72,8 @@ $.fn.extend
                  #data.ListSorter.remove()
                  $this.removeData "ListSorter"
 
-        change: ->
-            $(@).data("ListSorter").presenter.change $(this).val()
+        update: ->
+            $(@).data("ListSorter").presenter.update $(this).val()
 
         }
 

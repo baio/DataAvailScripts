@@ -4,25 +4,25 @@
     function ListSorterPresenter(settings) {
       this.settings = settings;
     }
-    ListSorterPresenter.prototype.change = function(val) {
-      var sortName, sortOrder;
-      sortOrder = "";
+    ListSorterPresenter.prototype.update = function(val) {
+      var order, path;
+      order = "";
       if (val && val !== "$reset") {
-        sortName = val;
+        path = val;
         switch (this.settings.order) {
           case "asc":
-            sortOrder = "desc";
+            order = "desc";
             break;
           case "desc":
-            sortName = "$reset";
+            path = "$reset";
             break;
           default:
-            sortOrder = "asc";
+            order = "asc";
         }
       } else {
-        sortName = "$reset";
+        path = "$reset";
       }
-      return window.location = "" + this.settings.callbackUrl + "?$orderby=" + sortName + "  " + sortOrder;
+      return window.location = "" + this.settings.url + "?$orderby=" + path + "  " + order;
     };
     return ListSorterPresenter;
   })();
@@ -30,8 +30,9 @@
     listSorter: function(method) {
       var methods, settings;
       settings = {
-        'callbackUrl': null,
-        'order': "none"
+        url: null,
+        order: "none",
+        autoUpdate: true
       };
       methods = {
         init: function(options) {
@@ -39,24 +40,30 @@
             $.extend(settings, options);
           }
           return this.each(function() {
-            var $this, attr, data, prr, s, _ref;
+            var $t, attr, data, prr, s, _ref;
             s = $.extend({}, settings);
-            $this = $(this);
-            attr = $this.attr("data-sort-callback");
+            $t = $(this);
+            attr = $t.attr("data-list-sorter-url");
             if (attr) {
-              s.callbackUrl = attr;
+              s.url = attr;
             }
-            (_ref = s.callbackUrl) != null ? _ref : s.callbackUrl = window.location.pathname;
-            attr = $this.attr("data-sort-order");
+            (_ref = s.url) != null ? _ref : s.url = window.location.pathname;
+            attr = $t.attr("data-list-sorter-order");
             if (attr) {
               s.order = attr;
             }
-            data = $this.data("ListSorter");
+            attr = $t.attr("data-list-auto-update");
+            if (attr) {
+              s.autoUpdate = new Boolean(attr);
+            }
+            data = $t.data("ListSorter");
             if (!data) {
               prr = new ListSorterPresenter(s);
-              $this.bind("change.ListSorter", methods.change);
-              return $this.data("ListSorter", {
-                target: $this,
+              if (s.autoUpdate) {
+                $t.bind("change.ListSorter", methods.update);
+              }
+              return $t.data("ListSorter", {
+                target: $t,
                 presenter: prr
               });
             }
@@ -71,8 +78,8 @@
             return $this.removeData("ListSorter");
           });
         },
-        change: function() {
-          return $(this).data("ListSorter").presenter.change($(this).val());
+        update: function() {
+          return $(this).data("ListSorter").presenter.update($(this).val());
         }
       };
       if (methods[method]) {
