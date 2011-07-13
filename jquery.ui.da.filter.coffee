@@ -1,8 +1,18 @@
 #dependencies: da.utils
+#if expression contains $val (if expression contains $value it should be full qualified expression)
+#and expression must meet [a-zA-Z0-9]
+    #replace $value with value or value() if function
+#else
+    #if expression is function get value of it
+    #if Name != null
+        #if not contains @ and not contains Name - append @ to start
+    #if not started with [ and | or ] insert [ and ]
+    #replace @->name
+    #glue all with and
+    #remove first and | or
 
-$ = jQuery
 
-class FilterPostPresenter
+class FilterPresenter
 
     settings : null
 
@@ -11,66 +21,63 @@ class FilterPostPresenter
     constructor: (@settings, @inputs) ->
 
     click: ->
-        valExpr = (target, expr, val)->
-            if expr.indexOf("$val") != -1
-                if !val then return ""
-                if val.match /^[0-9a-zA-Zа-яА-Я]+$/ then return expr.replace /\$val/gi, val
-                return val
-            null
 
-        getFilterVal = (name, val)->
-            if name and val then name+":"+val else val
+        f = @getFilter()
 
-        #if expression contains $val (if expression contains $value it should be full qualified expression)
-        #and expression must meet [a-zA-Z0-9]
-            #replace $value with value or value() if function
-        #else
-            #if expression is function get value of it
-            #if Name != null
-                #if not contains @ and not contains Name - append @ to start
-            #if not started with [ and | or ] insert [ and ]
-            #replace @->name
-            #glue all with and
-            #remove first and | or
-        format = (target, name, val, expr) ->
-             expr = expr.call(target) if $.isFunction expr
-             val = val.call(target) if $.isFunction val
-             expr = expr.replace(/@/gi, name) if name
-             v = valExpr target, expr, val
-             if v != null
-                v = v.replace(/@/gi, name) if name
-                return  fv : v, v : getFilterVal name, val
-             fv : expr, v : getFilterVal(name, if expr.indexOf("$") == 0 then null else expr)
+        window.location =  "#{@settings.callbackUrl}?$filter=#{f.filter}&filter_val=#{f.filterLabel}"
 
-        r = (format i.target, i.name, i.value, i.expression for i in @inputs)
+    getFilter: ->
+            valExpr = (target, expr, val)->
+                if expr.indexOf("$val") != -1
+                    if !val then return ""
+                    if val.match /^[0-9a-zA-Zа-яА-Я]+$/ then return expr.replace /\$val/gi, val
+                    return val
+                null
 
-        filter = ($.grep (i.fv for i in r), (p) -> p).join " and "
+            getFilterVal = (name, val)->
+                if name and val then name+":"+val else val
 
-        filterVals = ($.grep (i.v for i in r), (p) -> p).join()
+            format = (target, name, val, expr) ->
+                 expr = expr.call(target) if $.isFunction expr
+                 val = val.call(target) if $.isFunction val
+                 expr = expr.replace(/@/gi, name) if name
+                 v = valExpr target, expr, val
+                 if v != null
+                    v = v.replace(/@/gi, name) if name
+                    return  fv : v, v : getFilterVal name, val
+                 fv : expr, v : getFilterVal(name, if expr.indexOf("$") == 0 then null else expr)
 
-        filter = filter.da_trim("or").da_trim("and")
+            r = (format i.target, i.name, i.value, i.expression for i in @inputs)
 
-        window.location =  "#{@settings.callbackUrl}?$filter=#{filter}&filter_val=#{filterVals}"
+            filter = ($.grep (i.fv for i in r), (p) -> p).join " and "
+
+            filterVals = ($.grep (i.v for i in r), (p) -> p).join()
+
+            filter = filter.da_trim("or").da_trim("and")
+
+            return {filter : filter, filterLabels : filterVals }
 
 $.fn.extend
-  FilterPost: (method) ->
+
+  filter: (method) ->
 
     inputSettings =
-        "marker" : null
 
-        "name" : null
+        marker : null
 
-        "expression" : null
+        name : null
 
-        "value" : null
+        expression : null
 
-        "target" : null
+        value : null
+
+        target : null
 
 
     settings =
-        "marker" : null
+        marker : null
 
-        "callbackUrl" : null
+        callbackUrl : null
 
     methods = {
         init: (options) ->
@@ -83,10 +90,12 @@ $.fn.extend
 
                 $this = $(@)
 
-                attr = $this.attr "data-filter-post"
+                attr = $this.attr "data-filter"
 
                 if attr
                     s.marker = attr
+
+                s.marker ?= "default"
 
                 attr = $this.attr "data-filter-callback-url"
 
@@ -103,7 +112,7 @@ $.fn.extend
                 $this.bind "click.FilterPost", methods.click
 
                 if !data
-                   $this.data "FilterPost", {target: $this, presenter : new FilterPostPresenter s, methods.inputs(s.marker)}
+                   $this.data "FilterPost", {target: $this, presenter : new FilterPresenter s, methods.inputs(s.marker)}
 
         destroy: ->
             @.each ->
@@ -116,6 +125,11 @@ $.fn.extend
         click: ->
             data = $(@).data "FilterPost"
             data.presenter.click()
+
+
+        getFilter: ()->
+             data = $(@).data "FilterPost"
+             data.presenter.getFilter()
 
         inputs: (marker) ->
             format = ($this, settings) ->

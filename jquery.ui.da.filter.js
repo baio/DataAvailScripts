@@ -1,14 +1,18 @@
 (function() {
-  var $, FilterPostPresenter;
-  $ = jQuery;
-  FilterPostPresenter = (function() {
-    FilterPostPresenter.prototype.settings = null;
-    FilterPostPresenter.prototype.inputs = null;
-    function FilterPostPresenter(settings, inputs) {
+  var FilterPresenter;
+  FilterPresenter = (function() {
+    FilterPresenter.prototype.settings = null;
+    FilterPresenter.prototype.inputs = null;
+    function FilterPresenter(settings, inputs) {
       this.settings = settings;
       this.inputs = inputs;
     }
-    FilterPostPresenter.prototype.click = function() {
+    FilterPresenter.prototype.click = function() {
+      var f;
+      f = this.getFilter();
+      return window.location = "" + this.settings.callbackUrl + "?$filter=" + f.filter + "&filter_val=" + f.filterLabel;
+    };
+    FilterPresenter.prototype.getFilter = function() {
       var filter, filterVals, format, getFilterVal, i, r, valExpr;
       valExpr = function(target, expr, val) {
         if (expr.indexOf("$val") !== -1) {
@@ -88,23 +92,26 @@
         return p;
       })).join();
       filter = filter.da_trim("or").da_trim("and");
-      return window.location = "" + this.settings.callbackUrl + "?$filter=" + filter + "&filter_val=" + filterVals;
+      return {
+        filter: filter,
+        filterLabels: filterVals
+      };
     };
-    return FilterPostPresenter;
+    return FilterPresenter;
   })();
   $.fn.extend({
-    FilterPost: function(method) {
+    filter: function(method) {
       var inputSettings, methods, settings;
       inputSettings = {
-        "marker": null,
-        "name": null,
-        "expression": null,
-        "value": null,
-        "target": null
+        marker: null,
+        name: null,
+        expression: null,
+        value: null,
+        target: null
       };
       settings = {
-        "marker": null,
-        "callbackUrl": null
+        marker: null,
+        callbackUrl: null
       };
       methods = {
         init: function(options) {
@@ -112,27 +119,27 @@
             $.extend(settings, options);
           }
           return this.each(function() {
-            var $this, attr, data, s, _ref;
+            var $this, attr, data, s, _ref, _ref2;
             s = $.extend({}, settings);
             $this = $(this);
-            attr = $this.attr("data-filter-post");
+            attr = $this.attr("data-filter");
             if (attr) {
               s.marker = attr;
             }
+            (_ref = s.marker) != null ? _ref : s.marker = "default";
             attr = $this.attr("data-filter-callback-url");
             if (attr) {
               s.callbackUrl = attr;
             }
-            (_ref = s.callbackUrl) != null ? _ref : s.callbackUrl = window.location.pathname;
+            (_ref2 = s.callbackUrl) != null ? _ref2 : s.callbackUrl = window.location.pathname;
             if (!s.marker) {
               throw "marker must be defined";
             }
             data = $this.data("FilterPost");
-            $this.bind("click.FilterPost", methods.click);
             if (!data) {
               return $this.data("FilterPost", {
                 target: $this,
-                presenter: new FilterPostPresenter(s, methods.inputs(s.marker))
+                presenter: new FilterPresenter(s, methods.inputs(s.marker))
               });
             }
           });
@@ -151,6 +158,11 @@
           var data;
           data = $(this).data("FilterPost");
           return data.presenter.click();
+        },
+        getFilter: function() {
+          var data;
+          data = $(this).data("FilterPost");
+          return data.presenter.getFilter();
         },
         inputs: function(marker) {
           var e, format, _i, _len, _ref, _results;

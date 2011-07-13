@@ -8,12 +8,22 @@ class TableToolboxPresenter
             alert "addItem"
 
         settings.searchButton.click =>
-            alert @settings.searchVal() + " : " + @settings.orderByVal()
+            orderby = @settings.orderByVal()
+            orderby = "$orderby=#{orderby}" if orderby
+
+            sv = @settings.searchVal()
+            if sv.filter?
+                filter = sv.filter
+                filter = "$filter=#{sv.filter}&filter_val=#{sv.filterLabels}" if sv.filter
+            else
+                filter = "$filter=#{sv}" if sv
+
+            req = $.grep([filter, orderby], (v) -> v).join '&'
+
+            alert req
 
         settings.resetButton.click =>
             alert "reset"
-
-
 
 $.fn.extend
 
@@ -53,7 +63,11 @@ $.fn.extend
 
                     if !s.searchVal
                         s.searchVal = =>
-                            $("input.search-input, .search-input input", @).val()
+                            if $.filter
+                                f = $("input.search-input, .search-input input", @).filter()
+                                f.filter "getFilter"
+                            else
+                                $("select.sort-input, .sort-input select", this).val()
 
                     if !s.orderByVal
                         s.orderByVal = =>

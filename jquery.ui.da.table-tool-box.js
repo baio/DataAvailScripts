@@ -8,7 +8,26 @@
         return alert("addItem");
       });
       settings.searchButton.click(__bind(function() {
-        return alert(this.settings.searchVal() + " : " + this.settings.orderByVal());
+        var filter, orderby, req, sv;
+        orderby = this.settings.orderByVal();
+        if (orderby) {
+          orderby = "$orderby=" + orderby;
+        }
+        sv = this.settings.searchVal();
+        if (sv.filter != null) {
+          filter = sv.filter;
+          if (sv.filter) {
+            filter = "$filter=" + sv.filter + "&filter_val=" + sv.filterLabels;
+          }
+        } else {
+          if (sv) {
+            filter = "$filter=" + sv;
+          }
+        }
+        req = $.grep([filter, orderby], function(v) {
+          return v;
+        }).join('&');
+        return alert(req);
       }, this));
       settings.resetButton.click(__bind(function() {
         return alert("reset");
@@ -46,7 +65,13 @@
             }
             if (!s.searchVal) {
               s.searchVal = __bind(function() {
-                return $("input.search-input, .search-input input", this).val();
+                var f;
+                if ($.filter) {
+                  f = $("input.search-input, .search-input input", this).filter();
+                  return f.filter("getFilter");
+                } else {
+                  return $("select.sort-input, .sort-input select", this).val();
+                }
               }, this);
             }
             if (!s.orderByVal) {
