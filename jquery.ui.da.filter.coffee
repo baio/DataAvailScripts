@@ -11,6 +11,7 @@
     #glue all with and
     #remove first and | or
 
+#controls considered to work in 2 modes - first like a button to which search controls are linked through the marker attribute and second as search control itself
 
 class FilterPresenter
 
@@ -24,10 +25,15 @@ class FilterPresenter
 
         f = @getFilter()
 
+        if @settings.beforeCallbackUrl
+            f.filer = @settings.beforeCallbackUrl f.filter
+
         window.location =  "#{@settings.callbackUrl}?$filter=#{f.filter}&filter_val=#{f.filterLabel}"
 
     getFilter: ->
-            valExpr = (target, expr, val)->
+
+            valExpr = (expr, val)->
+                if !expr then return val
                 if expr.indexOf("$val") != -1
                     if !val then return ""
                     if val.match /^[0-9a-zA-Zа-яА-Я]+$/ then return expr.replace /\$val/gi, val
@@ -41,11 +47,11 @@ class FilterPresenter
                  expr = expr.call(target) if $.isFunction expr
                  val = val.call(target) if $.isFunction val
                  expr = expr.replace(/@/gi, name) if name
-                 v = valExpr target, expr, val
+                 v = valExpr expr, val
                  if v != null
                     v = v.replace(/@/gi, name) if name
                     return  fv : v, v : getFilterVal name, val
-                 fv : expr, v : getFilterVal(name, if expr.indexOf("$") == 0 then null else expr)
+                 fv : expr, v : getFilterVal(name, if !expr or expr.indexOf("$") == 0 then null else expr)
 
             r = (format i.target, i.name, i.value, i.expression for i in @inputs)
 
@@ -73,11 +79,13 @@ $.fn.extend
 
         target : null
 
-
     settings =
+
         marker : null
 
         callbackUrl : null
+
+        beforeCallbackUrl : null
 
     methods = {
         init: (options) ->
@@ -88,31 +96,32 @@ $.fn.extend
             @.each ->
                 s = $.extend {}, settings
 
-                $this = $(@)
+                $t = $(@)
 
-                attr = $this.attr "data-filter"
+                attr = $t.attr "data-filter"
 
                 if attr
                     s.marker = attr
 
-                s.marker ?= "default"
-
-                attr = $this.attr "data-filter-callback-url"
+                attr = $t.attr "data-filter-callback-url"
 
                 if attr
                     s.callbackUrl = attr
 
                 s.callbackUrl ?= window.location.pathname
 
+                ###
                 if !s.marker
                     throw "marker must be defined"
+                ###
 
-                data = $this.data "FilterPost"
+                data = $t.data "FilterPost"
 
-                $this.bind "click.FilterPost", methods.click
+                if s.marker
+                    $t.bind "click.FilterPost", methods.click
 
                 if !data
-                   $this.data "FilterPost", {target: $this, presenter : new FilterPresenter s, methods.inputs(s.marker)}
+                   $t.data "FilterPost", {target : $t, presenter : new FilterPresenter(s, if s.marker then methods.inputs(s.marker) else [ @ ])}
 
         destroy: ->
             @.each ->

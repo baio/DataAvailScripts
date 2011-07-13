@@ -7,6 +7,15 @@ class TableToolboxPresenter
         settings.addItemButton.click ->
             alert "addItem"
 
+        ###
+        $(settings.searchButton).filter
+                    marker : "toolbox-search"
+                    beforeCallbackUrl : (f)->
+                        orderby = @settings.orderByVal()
+                        orderby = "$orderby=#{orderby}" if orderby
+                        $.grep([filter, orderby], (v) -> v).join '&'
+        ###
+
         settings.searchButton.click =>
             orderby = @settings.orderByVal()
             orderby = "$orderby=#{orderby}" if orderby
@@ -44,6 +53,9 @@ $.fn.extend
         methods = {
             init: (options) ->
 
+                if !$.filter
+                    throw "ds.filer widget not found! cant' process further"
+
                 if options
                     $.extend settings, options
 
@@ -72,6 +84,13 @@ $.fn.extend
                     if !s.orderByVal
                         s.orderByVal = =>
                             $("select.sort-input, .sort-input select", this).val()
+
+
+
+                    ###
+                    #if still not initialized as filer widget
+                    $("input.search-input, .search-input input", @).attr "data-filter", "toolbox-search"
+                    ###
 
 
                     data = $t.data "TableToolbox"

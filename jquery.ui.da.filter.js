@@ -10,11 +10,17 @@
     FilterPresenter.prototype.click = function() {
       var f;
       f = this.getFilter();
+      if (this.settings.beforeCallbackUrl) {
+        f.filer = this.settings.beforeCallbackUrl(f.filter);
+      }
       return window.location = "" + this.settings.callbackUrl + "?$filter=" + f.filter + "&filter_val=" + f.filterLabel;
     };
     FilterPresenter.prototype.getFilter = function() {
       var filter, filterVals, format, getFilterVal, i, r, valExpr;
-      valExpr = function(target, expr, val) {
+      valExpr = function(expr, val) {
+        if (!expr) {
+          return val;
+        }
         if (expr.indexOf("$val") !== -1) {
           if (!val) {
             return "";
@@ -44,7 +50,7 @@
         if (name) {
           expr = expr.replace(/@/gi, name);
         }
-        v = valExpr(target, expr, val);
+        v = valExpr(expr, val);
         if (v !== null) {
           if (name) {
             v = v.replace(/@/gi, name);
@@ -56,7 +62,7 @@
         }
         return {
           fv: expr,
-          v: getFilterVal(name, expr.indexOf("$") === 0 ? null : expr)
+          v: getFilterVal(name, !expr || expr.indexOf("$") === 0 ? null : expr)
         };
       };
       r = (function() {
@@ -111,7 +117,8 @@
       };
       settings = {
         marker: null,
-        callbackUrl: null
+        callbackUrl: null,
+        beforeCallbackUrl: null
       };
       methods = {
         init: function(options) {
@@ -119,27 +126,30 @@
             $.extend(settings, options);
           }
           return this.each(function() {
-            var $this, attr, data, s, _ref, _ref2;
+            var $t, attr, data, s, _ref;
             s = $.extend({}, settings);
-            $this = $(this);
-            attr = $this.attr("data-filter");
+            $t = $(this);
+            attr = $t.attr("data-filter");
             if (attr) {
               s.marker = attr;
             }
-            (_ref = s.marker) != null ? _ref : s.marker = "default";
-            attr = $this.attr("data-filter-callback-url");
+            attr = $t.attr("data-filter-callback-url");
             if (attr) {
               s.callbackUrl = attr;
             }
-            (_ref2 = s.callbackUrl) != null ? _ref2 : s.callbackUrl = window.location.pathname;
-            if (!s.marker) {
-              throw "marker must be defined";
+            (_ref = s.callbackUrl) != null ? _ref : s.callbackUrl = window.location.pathname;
+            /*
+            if !s.marker
+                throw "marker must be defined"
+            */
+            data = $t.data("FilterPost");
+            if (s.marker) {
+              $t.bind("click.FilterPost", methods.click);
             }
-            data = $this.data("FilterPost");
             if (!data) {
-              return $this.data("FilterPost", {
-                target: $this,
-                presenter: new FilterPresenter(s, methods.inputs(s.marker))
+              return $t.data("FilterPost", {
+                target: $t,
+                presenter: new FilterPresenter(s, s.marker ? methods.inputs(s.marker) : [this])
               });
             }
           });

@@ -7,6 +7,14 @@
       settings.addItemButton.click(function() {
         return alert("addItem");
       });
+      /*
+      $(settings.searchButton).filter
+                  marker : "toolbox-search"
+                  beforeCallbackUrl : (f)->
+                      orderby = @settings.orderByVal()
+                      orderby = "$orderby=#{orderby}" if orderby
+                      $.grep([filter, orderby], (v) -> v).join '&'
+      */
       settings.searchButton.click(__bind(function() {
         var filter, orderby, req, sv;
         orderby = this.settings.orderByVal();
@@ -47,6 +55,9 @@
       };
       methods = {
         init: function(options) {
+          if (!$.filter) {
+            throw "ds.filer widget not found! cant' process further";
+          }
           if (options) {
             $.extend(settings, options);
           }
@@ -79,6 +90,10 @@
                 return $("select.sort-input, .sort-input select", this).val();
               }, this);
             }
+            /*
+            #if still not initialized as filer widget
+            $("input.search-input, .search-input input", @).attr "data-filter", "toolbox-search"
+            */
             data = $t.data("TableToolbox");
             if (!data) {
               prr = new TableToolboxPresenter(s);
