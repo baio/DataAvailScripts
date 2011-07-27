@@ -2,6 +2,25 @@ class ListSorterPresenter
     constructor: (@settings)->
 
     update: (val)->
+
+        ###
+        order = ""
+        if (val && val != "$reset")
+            path = val
+            switch @settings.order
+                when "asc" then order = "desc"
+                when "desc" then path = "$reset"
+                else order = "asc"
+        else
+            path = "$reset"
+        ###
+
+        r = @getOrder val
+
+        #window.location = "#{@settings.url}?$orderby=#{path}  #{order}"
+        window.location = "#{@settings.url}?#{r}"
+
+    getOrder:(val) ->
         order = ""
         if (val && val != "$reset")
             path = val
@@ -12,7 +31,7 @@ class ListSorterPresenter
         else
             path = "$reset"
 
-        window.location = "#{@settings.url}?$orderby=#{path}  #{order}"
+        "$orderby=#{path}  #{order}"
 
 $.fn.extend
   listSorter: (method) ->
@@ -74,6 +93,11 @@ $.fn.extend
 
         update: ->
             $(@).data("ListSorter").presenter.update $(this).val()
+
+
+        getOrder: ->
+             data = $(@).data "ListSorter"
+             data.presenter.getOrder $(this).val()
 
         }
 

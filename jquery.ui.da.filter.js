@@ -15,9 +15,9 @@
       var f;
       f = this.getFilter();
       if (this.settings.beforeCallbackUrl) {
-        f.filer = this.settings.beforeCallbackUrl(f.filter);
+        f = this.settings.beforeCallbackUrl(f);
       }
-      return window.location = "" + this.settings.callbackUrl + "?$filter=" + f.filter + "&filter_val=" + f.filterLabel;
+      return window.location = "" + this.settings.callbackUrl + "?" + f;
     };
     FilterPresenter.prototype.getFilter = function() {
       var filter, filterVals, format, getFilterVal, i, r, valExpr;
@@ -102,10 +102,7 @@
         return p;
       })).join();
       filter = filter.da_trim("or").da_trim("and");
-      return {
-        filter: filter,
-        filterLabels: filterVals
-      };
+      return "$filter=" + filter + "&filter_val=" + filterVals;
     };
     return FilterPresenter;
   })();

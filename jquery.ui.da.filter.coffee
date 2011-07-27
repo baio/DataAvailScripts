@@ -30,9 +30,10 @@ class FilterPresenter
         f = @getFilter()
 
         if @settings.beforeCallbackUrl
-            f.filer = @settings.beforeCallbackUrl f.filter
+            f = @settings.beforeCallbackUrl f
 
-        window.location =  "#{@settings.callbackUrl}?$filter=#{f.filter}&filter_val=#{f.filterLabel}"
+        #window.location =  "#{@settings.callbackUrl}?$filter=#{f.filter}&filter_val=#{f.filterLabel}"
+        window.location =  "#{@settings.callbackUrl}?#{f}"
 
     getFilter: ->
 
@@ -65,7 +66,8 @@ class FilterPresenter
 
             filter = filter.da_trim("or").da_trim("and")
 
-            return {filter : filter, filterLabels : filterVals }
+            #return {filter : filter, filterLabels : filterVals }
+            return "$filter=#{filter}&filter_val=#{filterVals}"
 
 $.fn.extend
 

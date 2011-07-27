@@ -5,6 +5,21 @@
       this.settings = settings;
     }
     ListSorterPresenter.prototype.update = function(val) {
+      /*
+      order = ""
+      if (val && val != "$reset")
+          path = val
+          switch @settings.order
+              when "asc" then order = "desc"
+              when "desc" then path = "$reset"
+              else order = "asc"
+      else
+          path = "$reset"
+      */      var r;
+      r = this.getOrder(val);
+      return window.location = "" + this.settings.url + "?" + r;
+    };
+    ListSorterPresenter.prototype.getOrder = function(val) {
       var order, path;
       order = "";
       if (val && val !== "$reset") {
@@ -22,7 +37,7 @@
       } else {
         path = "$reset";
       }
-      return window.location = "" + this.settings.url + "?$orderby=" + path + "  " + order;
+      return "$orderby=" + path + "  " + order;
     };
     return ListSorterPresenter;
   })();
@@ -80,6 +95,11 @@
         },
         update: function() {
           return $(this).data("ListSorter").presenter.update($(this).val());
+        },
+        getOrder: function() {
+          var data;
+          data = $(this).data("ListSorter");
+          return data.presenter.getOrder($(this).val());
         }
       };
       if (methods[method]) {
