@@ -29,16 +29,18 @@ class TableToolboxPresenter
 
             req = $.grep([filter, orderby], (v) -> v).join '&'
 
-            alert req
+            window.location =  "#{@settings.callbackUrl}?#{req}"
 
         settings.resetButton.click =>
-            alert "reset"
+            window.location =  "#{@settings.callbackUrl}?$filter=$reset&$orderby=$reset"
 
 $.fn.extend
 
   tableToolbox: (method) ->
 
         settings =
+            
+            callbackUrl : null
 
             addItemButton : null
 
@@ -91,6 +93,8 @@ $.fn.extend
                     #if still not initialized as filer widget
                     $("input.search-input, .search-input input", @).attr "data-filter", "toolbox-search"
                     ###
+
+                    s.callbackUrl ?= window.location.pathname
 
 
                     data = $t.data "TableToolbox"

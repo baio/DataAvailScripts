@@ -1,5 +1,9 @@
 (function() {
-  var FilterPresenter;
+  /*
+  controls considered to work in 2 modes - first like a button to which search controls are linked through the marker attribute and second as search control itself
+  if for button mode :
+  inputs can consist from number of controls each of condition will be contantinated by and operand
+  */  var FilterPresenter;
   FilterPresenter = (function() {
     FilterPresenter.prototype.settings = null;
     FilterPresenter.prototype.inputs = null;
@@ -149,7 +153,7 @@
             if (!data) {
               return $t.data("FilterPost", {
                 target: $t,
-                presenter: new FilterPresenter(s, s.marker ? methods.inputs(s.marker) : [this])
+                presenter: new FilterPresenter(s, methods.inputs(s.marker ? s.marker : [this]))
               });
             }
           });
@@ -175,7 +179,7 @@
           return data.presenter.getFilter();
         },
         inputs: function(marker) {
-          var e, format, _i, _len, _ref, _results;
+          var e, format, ipts, _i, _len, _results;
           format = function($this, settings) {
             var attr, s;
             s = $.extend({}, settings);
@@ -200,10 +204,14 @@
             s.target = $this;
             return s;
           };
-          _ref = $("[data-filter-input" + (marker ? "=" + marker : "") + "]");
+          if (typeof marker === "string") {
+            ipts = $("[data-filter-input" + (marker ? "=" + marker : "") + "]");
+          } else {
+            ipts = [$(marker)];
+          }
           _results = [];
-          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            e = _ref[_i];
+          for (_i = 0, _len = ipts.length; _i < _len; _i++) {
+            e = ipts[_i];
             _results.push(format($(e), inputSettings));
           }
           return _results;

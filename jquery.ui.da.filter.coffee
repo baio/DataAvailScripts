@@ -11,7 +11,11 @@
     #glue all with and
     #remove first and | or
 
-#controls considered to work in 2 modes - first like a button to which search controls are linked through the marker attribute and second as search control itself
+###
+controls considered to work in 2 modes - first like a button to which search controls are linked through the marker attribute and second as search control itself
+if for button mode :
+inputs can consist from number of controls each of condition will be contantinated by and operand
+###
 
 class FilterPresenter
 
@@ -121,7 +125,7 @@ $.fn.extend
                     $t.bind "click.FilterPost", methods.click
 
                 if !data
-                   $t.data "FilterPost", {target : $t, presenter : new FilterPresenter(s, if s.marker then methods.inputs(s.marker) else [ @ ])}
+                   $t.data "FilterPost", {target : $t, presenter : new FilterPresenter(s, methods.inputs(if s.marker then s.marker else [ @ ])) }
 
         destroy: ->
             @.each ->
@@ -141,6 +145,7 @@ $.fn.extend
              data.presenter.getFilter()
 
         inputs: (marker) ->
+
             format = ($this, settings) ->
 
                     s = $.extend {}, settings
@@ -170,8 +175,12 @@ $.fn.extend
 
                     s
 
-            format $(e), inputSettings for e in $("[data-filter-input#{if marker then "=" + marker else ""}]")
+            if typeof(marker) == "string"
+                ipts = $("[data-filter-input#{if marker then "=" + marker else ""}]")
+            else
+                ipts = [$(marker)]
 
+            format $(e), inputSettings for e in ipts
         }
 
     if  methods[method]

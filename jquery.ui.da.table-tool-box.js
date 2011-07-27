@@ -35,10 +35,10 @@
         req = $.grep([filter, orderby], function(v) {
           return v;
         }).join('&');
-        return alert(req);
+        return window.location = "" + this.settings.callbackUrl + "?" + req;
       }, this));
       settings.resetButton.click(__bind(function() {
-        return alert("reset");
+        return window.location = "" + this.settings.callbackUrl + "?$filter=$reset&$orderby=$reset";
       }, this));
     }
     return TableToolboxPresenter;
@@ -47,6 +47,7 @@
     tableToolbox: function(method) {
       var methods, settings;
       settings = {
+        callbackUrl: null,
         addItemButton: null,
         searchButton: null,
         resetButton: null,
@@ -62,7 +63,7 @@
             $.extend(settings, options);
           }
           return this.each(function() {
-            var $t, data, prr, s;
+            var $t, data, prr, s, _ref;
             s = $.extend({}, settings);
             $t = $(this);
             if (!s.addItemButton) {
@@ -94,6 +95,7 @@
             #if still not initialized as filer widget
             $("input.search-input, .search-input input", @).attr "data-filter", "toolbox-search"
             */
+            (_ref = s.callbackUrl) != null ? _ref : s.callbackUrl = window.location.pathname;
             data = $t.data("TableToolbox");
             if (!data) {
               prr = new TableToolboxPresenter(s);
