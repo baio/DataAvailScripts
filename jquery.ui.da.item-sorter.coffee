@@ -24,10 +24,6 @@ class ItemSorterPresenter
 
         window.location = "#{@settings.url}?$orderby=#{path}  #{order}"
 
-###
-arguments could be passed through options or attributes:
-data-table-header-sort-name and data-table-header-sort-order
-###
 $.fn.extend
   itemSorter: (method) ->
 
@@ -62,6 +58,8 @@ $.fn.extend
                 
                 if attr
                     s.path = attr
+
+                s.path = $this.text()
 
                 attr = $this.attr "data-item-sorter-order"
 

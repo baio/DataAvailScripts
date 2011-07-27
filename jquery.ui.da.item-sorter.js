@@ -1,5 +1,5 @@
 (function() {
-  var ItemSorterPresenter;
+  ﻿;  var ItemSorterPresenter;
   ItemSorterPresenter = (function() {
     var settings;
     settings = null;
@@ -24,10 +24,6 @@
     };
     return ItemSorterPresenter;
   })();
-  /*
-  arguments could be passed through options or attributes:
-  data-table-header-sort-name and data-table-header-sort-order
-  */
   $.fn.extend({
     itemSorter: function(method) {
       var methods, settings;
@@ -55,6 +51,7 @@
             if (attr) {
               s.path = attr;
             }
+            s.path = $this.text();
             attr = $this.attr("data-item-sorter-order");
             if (attr) {
               s.order = attr;
