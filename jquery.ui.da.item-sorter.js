@@ -39,7 +39,7 @@
             $.extend(settings, options);
           }
           return this.each(function() {
-            var $this, attr, data, s, _ref;
+            var $this, attr, data, s, _ref, _ref2;
             s = $.extend({}, settings);
             $this = $(this);
             attr = $this.attr("data-item-sorter-url");
@@ -51,7 +51,7 @@
             if (attr) {
               s.path = attr;
             }
-            s.path = $this.text();
+            (_ref2 = s.path) != null ? _ref2 : s.path = $this.text();
             attr = $this.attr("data-item-sorter-order");
             if (attr) {
               s.order = attr;

@@ -59,7 +59,7 @@ $.fn.extend
                 if attr
                     s.path = attr
 
-                s.path = $this.text()
+                s.path ?= $this.text()
 
                 attr = $this.attr "data-item-sorter-order"
 
