@@ -66,8 +66,7 @@ class FilterPresenter
 
             filter = filter.da_trim("or").da_trim("and")
 
-            #return {filter : filter, filterLabels : filterVals }
-            return "$filter=#{filter}&filter_val=#{filterVals}"
+            "$filter=#{filter}&filter_val=#{filterVals}"
 
 $.fn.extend
 

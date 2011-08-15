@@ -42,14 +42,15 @@
         onShow: function(dialog) {
           window.da_md_cr_prr.d = this;
           return dialog.data.find(">:first-child").load(function() {
-            this.contentDocument.prr = this;
+            $("table.item-selector-list > :not(thead) > tr > .row_opers", this.contentDocument).click(function(e, ui) {
+              return e.stopPropagation();
+            });
             return $("table.item-selector-list > :not(thead) > tr", this.contentDocument).click(function(e, ui) {
               var $t, s, wp;
               wp = window.parent;
               $t = $(this);
               s = window.da_md_cr_prr.s;
               wp.$("#" + s.parentValFieldId).val($t.attr("data-val"));
-              wp.$("#" + s.parentLabelFieldId).val($t.attr("data-label"));
               wp.$("#" + s.parentLabelFieldId).val($t.attr("data-label"));
               window.da_md_cr_prr.d.close();
               return window.da_md_cr_prr = null;
@@ -105,7 +106,7 @@
               throw "url must be defined";
             }
             if (s.reqLabelName && s.reqLabelValue) {
-              s.url = "" + s.url + "?" + s.reqLabelName + "=" + s.reqLabelValue;
+              s.url = s.url.da_joinUrlParam("" + s.reqLabelName + "=" + s.reqLabelValue);
             }
             $t.bind("click.ItemSelector", methods.click);
             return $t.data("ItemSelector", {

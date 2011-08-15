@@ -42,6 +42,8 @@ class itemSelectorPresenter
                 onShow: (dialog) ->
                     window.da_md_cr_prr.d = @
                     dialog.data.find(">:first-child").load ->
+                        $("table.item-selector-list > :not(thead) > tr > .row_opers", this.contentDocument).click (e, ui)->
+                            e.stopPropagation()
                         $("table.item-selector-list > :not(thead) > tr", this.contentDocument).click (e, ui)->
                             wp = window.parent
                             $t = $ @
@@ -110,7 +112,7 @@ $.fn.extend
                     throw "url must be defined"
 
                 if s.reqLabelName and s.reqLabelValue
-                    s.url = "#{s.url}?#{s.reqLabelName}=#{s.reqLabelValue}"
+                    s.url = s.url.da_joinUrlParam "#{s.reqLabelName}=#{s.reqLabelValue}"#"#{s.url}?#{s.reqLabelName}=#{s.reqLabelValue}"
 
                 $t.bind "click.ItemSelector", methods.click
 

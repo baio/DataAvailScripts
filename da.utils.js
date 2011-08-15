@@ -38,15 +38,8 @@
     return a.toString();
   };
   Array.prototype.da_joinUrls = function(joiner) {
-    return da_join('/');
+    return this.da_join('/');
   };
-  /*
-      s = @[0]?.da_trim '/', false
-      for i in @.slice 1
-          if i then s += '/' + i.da_trim '/', true
-
-      s
-  */
   Array.prototype.da_join = function(joiner) {
     var i, s, _i, _len, _ref, _ref2;
     s = (_ref = this[0]) != null ? _ref.da_trim(joiner, false) : void 0;
@@ -58,5 +51,8 @@
       }
     }
     return s;
+  };
+  String.prototype.da_joinUrlParam = function(param) {
+    return this + (this.indexOf('?') === -1 ? "?" : "&") + param;
   };
 }).call(this);

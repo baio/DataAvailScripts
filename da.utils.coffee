@@ -44,14 +44,7 @@ String::da_trim = (str, start)->
     a.toString();
 
 Array::da_joinUrls = (joiner)->
-    da_join '/'
-###
-    s = @[0]?.da_trim '/', false
-    for i in @.slice 1
-        if i then s += '/' + i.da_trim '/', true
-
-    s
-###
+    @da_join '/'
 
 Array::da_join = (joiner)->
 
@@ -60,3 +53,7 @@ Array::da_join = (joiner)->
         if i then s += joiner + i.da_trim joiner, true
 
     s
+String::da_joinUrlParam = (param)->
+    @ + (if @.indexOf('?') == -1 then "?" else "&") + param
+
+
