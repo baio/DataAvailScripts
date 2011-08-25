@@ -15,7 +15,8 @@
       by values from data-val, data-label attributes correspondengly of clicked row->child window is closed
 
       child table from where select could by doing must be marked with  id="item-selector-list"
-  */  var itemSelectorPresenter;
+  */  var $, itemSelectorPresenter;
+  $ = jQuery;
   itemSelectorPresenter = (function() {
     var settings;
     settings = null;
@@ -23,37 +24,42 @@
       this.settings = settings;
     }
     itemSelectorPresenter.prototype.click = function() {
-      var src;
+      var $jParent, dlg, src;
       src = this.settings.url;
       window.da_md_cr_prr = {
         s: this.settings,
-        d: null
+        w: window
       };
-      return $.modal("<iframe src='" + src + "' height='100%' width='100%' style='border:0'>", {
-        containerCss: {
-          height: "90%",
-          width: "90%",
-          opacity: 20
-        },
-        overlayClose: true,
-        overlayCss: {
-          backgroundColor: "blue"
-        },
-        onShow: function(dialog) {
-          window.da_md_cr_prr.d = this;
-          return dialog.data.find(">:first-child").load(function() {
+      dlg = null;
+      if (window.top !== window.self) {
+        $jParent = window.top.jQuery.noConflict();
+        dlg = $jParent("<iframe src='" + src + "'></iframe>");
+        $ = jQuery;
+      } else {
+        dlg = $("<iframe src='" + src + "'></iframe>");
+      }
+      return dlg.dialog({
+        modal: true,
+        autoOpen: true,
+        width: 900,
+        height: 700,
+        open: function() {
+          $(this).css("width", "100%");
+          return $(this).load(function() {
             $("table.item-selector-list > :not(thead) > tr > .row_opers", this.contentDocument).click(function(e, ui) {
               return e.stopPropagation();
             });
             return $("table.item-selector-list > :not(thead) > tr", this.contentDocument).click(function(e, ui) {
               var $t, s, wp;
-              wp = window.parent;
+              wp = window.da_md_cr_prr.w;
               $t = $(this);
               s = window.da_md_cr_prr.s;
-              wp.$("#" + s.parentValFieldId).val($t.attr("data-val"));
-              wp.$("#" + s.parentLabelFieldId).val($t.attr("data-label"));
-              window.da_md_cr_prr.d.close();
-              return window.da_md_cr_prr = null;
+              wp.$("[id='" + s.parentValFieldId + "']").val($t.attr("data-val"));
+              wp.$("[id='" + s.parentLabelFieldId + "']").val($t.attr("data-label"));
+              return setTimeout(function() {
+                dlg.dialog("close");
+                return window.da_md_cr_prr = null;
+              }, 10);
             });
           });
         }

@@ -16,6 +16,7 @@
 
     child table from where select could by doing must be marked with  id="item-selector-list"
 ###
+$ = jQuery
 
 class itemSelectorPresenter
 
@@ -25,33 +26,37 @@ class itemSelectorPresenter
 
     click: ->
         src = @settings.url
-        window.da_md_cr_prr =  s : @settings, d : null
-        $.modal "<iframe src='#{src}' height='100%' width='100%' style='border:0'>",
-                containerCss :
+        window.da_md_cr_prr =  s : @settings, w : window
 
-                    height:"90%"
+        dlg = null
 
-                    width:"90%"
+        if window.top != window.self
+               $jParent = window.top.jQuery.noConflict();
+               dlg = $jParent("<iframe src='#{src}'></iframe>");
+               $ = jQuery
+            else
+               dlg = $("<iframe src='#{src}'></iframe>");
 
-                    opacity:20
-
-                overlayClose : true
-
-                overlayCss: {backgroundColor: "blue"}
-
-                onShow: (dialog) ->
-                    window.da_md_cr_prr.d = @
-                    dialog.data.find(">:first-child").load ->
-                        $("table.item-selector-list > :not(thead) > tr > .row_opers", this.contentDocument).click (e, ui)->
-                            e.stopPropagation()
-                        $("table.item-selector-list > :not(thead) > tr", this.contentDocument).click (e, ui)->
-                            wp = window.parent
-                            $t = $ @
-                            s = window.da_md_cr_prr.s
-                            wp.$("#" + s.parentValFieldId).val $t.attr("data-val")
-                            wp.$("#" + s.parentLabelFieldId).val $t.attr("data-label")
-                            window.da_md_cr_prr.d.close()
-                            window.da_md_cr_prr = null
+        dlg.dialog
+            modal : true
+            autoOpen : true
+            width : 900
+            height : 700
+            open : ->
+                $(@).css "width" , "100%"
+                $(@).load ->
+                    $("table.item-selector-list > :not(thead) > tr > .row_opers", this.contentDocument).click (e, ui)->
+                        e.stopPropagation()
+                    $("table.item-selector-list > :not(thead) > tr", this.contentDocument).click (e, ui)->
+                        wp = window.da_md_cr_prr.w
+                        $t = $ @
+                        s = window.da_md_cr_prr.s
+                        wp.$("[id='#{s.parentValFieldId}']").val $t.attr("data-val")
+                        wp.$("[id='#{s.parentLabelFieldId}']").val $t.attr("data-label")
+                        setTimeout ->
+                                dlg.dialog "close"
+                                window.da_md_cr_prr = null
+                            , 10
 
 $.fn.extend
   itemSelector: (method) ->
