@@ -1,20 +1,20 @@
-﻿copy $(ProjectDir)jquery.ui.da.table.header-sort.js c:\vs\Piterskie\Piterskie.WebApp\Scripts\jquery.ui.da.table.header-sort.js
-copy $(ProjectDir)jquery.ui.da.filters.js c:\vs\Piterskie\Piterskie.WebApp\Scripts\jquery.ui.da.filters.js
-copy $(ProjectDir)da.utils.js c:\vs\Piterskie\Piterskie.WebApp\Scripts\da.utils.js
-copy $(ProjectDir)jquery.ui.da.textBox.js c:\vs\Piterskie\Piterskie.WebApp\Scripts\jquery.ui.da.textBox.js
-copy $(ProjectDir)jquery.ui.da.textBox.css c:\vs\Piterskie\Piterskie.WebApp\Content\jquery.ui.da.textBox.css
+﻿copy $(ProjectDir)jquery.ui.da.date-picker.js C:\vs\DataAvail\DataAvail.MVC.Boilerplate\content\js\jquery.ui.da.date-picker.js
+copy $(ProjectDir)jquery.ui.da.auto-complete.js C:\vs\DataAvail\DataAvail.MVC.Boilerplate\content\js\jquery.ui.da.auto-complete.js
+copy $(ProjectDir)jquery.ui.da.item-selector.js C:\vs\DataAvail\DataAvail.MVC.Boilerplate\content\js\jquery.ui.da.item-selector.js
+copy $(ProjectDir)jquery.ui.da.list-sorter.js C:\vs\DataAvail\DataAvail.MVC.Boilerplate\content\js\jquery.ui.da.list-sorter.js
+copy $(ProjectDir)jquery.ui.da.table.item-sorter.js C:\vs\DataAvail\DataAvail.MVC.Boilerplate\content\js\jquery.ui.da.item-sorter.js
+copy $(ProjectDir)jquery.ui.da.filter.js C:\vs\DataAvail\DataAvail.MVC.Boilerplate\content\js\jquery.ui.da.filter.js
+copy $(ProjectDir)da.utils.js C:\vs\DataAvail\DataAvail.MVC.Boilerplate\content\js\da.utils.js
+copy $(ProjectDir)jquery.ui.da.text-box.js C:\vs\DataAvail\DataAvail.MVC.Boilerplate\content\js\jquery.ui.da.text-box.js
+copy $(ProjectDir)jquery.ui.da.text-box.css C:\vs\DataAvail\DataAvail.MVC.Boilerplate\content\js\jquery.ui.da.text-box.css
 
-///dependencies
-copy $(ProjectDir)Dependencies\jquery.simplemodal-1.4.1.js C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\Dependencies\jquery.simplemodal-1.4.1.min.js
-copy $(ProjectDir)Dependencies\x.png C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\Dependencies\x.png
-copy $(ProjectDir)Dependencies\jquery.simplemodal.css C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\Dependencies\jquery.simplemodal.css
 
-copy $(ProjectDir)jquery.ui.da.date-picker.js C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\jquery.ui.da.date-picker.js
-copy $(ProjectDir)jquery.ui.da.autoComplete.js C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\jquery.ui.da.autoComplete.js
-copy $(ProjectDir)jquery.ui.da.item-selector.js C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\jquery.ui.da.item-selector.js
-copy $(ProjectDir)jquery.ui.da.sort-list.js C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\jquery.ui.da.sort-list.js
-copy $(ProjectDir)jquery.ui.da.table.header-sort.js C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\jquery.ui.da.table.header-sort.js
-copy $(ProjectDir)jquery.ui.da.filters.js C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\jquery.ui.da.filters.js
-copy $(ProjectDir)da.utils.js C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\da.utils.js
-copy $(ProjectDir)jquery.ui.da.textBox.js C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Scripts\jquery.ui.da.textBox.js
-copy $(ProjectDir)jquery.ui.da.textBox.css C:\vs\ITS.NetProject\ITS.NetProject.WebApplication\Content\jquery.ui.da.textBox.css
+copy $(ProjectDir)jquery.ui.da.date-picker.js C:\vs\ITS\ITS.LandLord\content\js\jquery.ui.da.date-picker.js
+copy $(ProjectDir)jquery.ui.da.auto-complete.js C:\vs\ITS\ITS.LandLord\content\js\jquery.ui.da.auto-complete.js
+copy $(ProjectDir)jquery.ui.da.item-selector.js C:\vs\ITS\ITS.LandLord\content\js\jquery.ui.da.item-selector.js
+copy $(ProjectDir)jquery.ui.da.list-sorter.js C:\vs\ITS\ITS.LandLord\content\js\jquery.ui.da.list-sorter.js
+copy $(ProjectDir)jquery.ui.da.table.item-sorter.js C:\vs\ITS\ITS.LandLord\content\js\jquery.ui.da.item-sorter.js
+copy $(ProjectDir)jquery.ui.da.filter.js C:\vs\ITS\ITS.LandLord\content\js\jquery.ui.da.filter.js
+copy $(ProjectDir)da.utils.js C:\vs\ITS\ITS.LandLord\content\js\da.utils.js
+copy $(ProjectDir)jquery.ui.da.text-box.js C:\vs\ITS\ITS.LandLord\content\js\jquery.ui.da.text-box.js
+copy $(ProjectDir)jquery.ui.da.text-box.css C:\vs\ITS\ITS.LandLord\content\js\jquery.ui.da.text-box.css
