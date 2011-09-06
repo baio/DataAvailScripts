@@ -18,8 +18,7 @@ $.widget 'ui.tagitext',
 
     _create: ->
         el = $(@element[0])
-        @options.valueNode ?= el.attr "data-value-field"
-        @options.valueNode = $(@options.valueNode) if typeof @options.valueNode == "string"
+
         @options.url ?= el.attr "data-url"
         @options.filter ?= el.attr "data-filter"
         el.tagit
@@ -28,6 +27,10 @@ $.widget 'ui.tagitext',
             onTagRemoved : @_onTagRemoved
             tagSource : @_tagSource
             ext : @
+            allowNotInList : false
+
+        @options.valueNode ?= el.attr "data-value-field"
+        @options.valueNode = $("#"+@options.valueNode) if typeof @options.valueNode == "string"
 
     _tagSource : (search, showChoices)->
 
@@ -35,9 +38,9 @@ $.widget 'ui.tagitext',
         ext = that.options.ext
 
         $.ajax
-             url :        ext.options.url.replace /$term/, search.term
+             url :       ext.options.url.replace /\$term/, search.term
              dataType :   "json"
-             data:        $filter : ext.options.filter.replace(/$term/, search.term) if ext.options.filter
+             data:       if ext.options.filter then $filter : ext.options.filter.replace(/\$term/, search.term) else null
              success:    (data) ->
 
                    choices = $.map data.d, (element)->
@@ -89,4 +92,4 @@ $.widget 'ui.tagitext',
             value : val, label : label, key : key
 
     _expellExistent: (items, existent) ->
-        $.grep items, (element) -> $.inArray existent,  element.value
+        $.grep items, (element) -> $.inArray(element.value, existent) == -1
