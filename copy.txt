@@ -1,4 +1,4 @@
-﻿copy $(ProjectDir)jquery.ui.da.date-picker.js C:\vs\DataAvail\DataAvail.MVC.Boilerplate\content\js\jquery.ui.da.date-picker.js
+﻿﻿copy $(ProjectDir)jquery.ui.da.date-picker.js C:\vs\DataAvail\DataAvail.MVC.Boilerplate\content\js\jquery.ui.da.date-picker.js
 copy $(ProjectDir)jquery.ui.da.auto-complete.js C:\vs\DataAvail\DataAvail.MVC.Boilerplate\content\js\jquery.ui.da.auto-complete.js
 copy $(ProjectDir)jquery.ui.da.item-selector.js C:\vs\DataAvail\DataAvail.MVC.Boilerplate\content\js\jquery.ui.da.item-selector.js
 copy $(ProjectDir)jquery.ui.da.list-sorter.js C:\vs\DataAvail\DataAvail.MVC.Boilerplate\content\js\jquery.ui.da.list-sorter.js
