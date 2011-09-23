@@ -22,22 +22,32 @@ class itemSelectorPresenter
 
     settings = null
 
+    dlg = null
+
+    widget = null
+
+    wnd = null
+
     constructor: (@settings)->
 
     click: ->
         src = @settings.url
-        window.da_md_cr_prr =  s : @settings, w : window
+        window.itemSelector = @
 
-        dlg = null
+        @dlg = null
 
-        if window.top != window.self
-               $jParent = window.top.jQuery.noConflict();
-               dlg = $jParent("<iframe src='#{src}'></iframe>");
+        @wnd = window
+
+        if window.parent != window.self
+               $jParent = window.parent.jQuery.noConflict();
+               @dlg = $jParent("<iframe src='#{src}'></iframe>");
                $ = jQuery
             else
-               dlg = $("<iframe src='#{src}'></iframe>");
+               @dlg = $("<iframe src='#{src}'></iframe>");
 
-        dlg.dialog
+        that = @
+
+        @dlg.dialog
             modal : true
             autoOpen : true
             width : 900
@@ -45,18 +55,35 @@ class itemSelectorPresenter
             open : ->
                 $(@).css "width" , "100%"
                 $(@).load ->
-                    $("table.item-selector-list > :not(thead) > tr > .row_opers", this.contentDocument).click (e, ui)->
-                        e.stopPropagation()
-                    $("table.item-selector-list > :not(thead) > tr", this.contentDocument).click (e, ui)->
-                        wp = window.da_md_cr_prr.w
-                        $t = $ @
-                        s = window.da_md_cr_prr.s
-                        wp.$("[id='#{s.parentValFieldId}']").val $t.attr("data-val")
-                        wp.$("[id='#{s.parentLabelFieldId}']").val $t.attr("data-label")
-                        setTimeout ->
-                                dlg.dialog "close"
-                                window.da_md_cr_prr = null
-                            , 10
+                    that.rebind()
+    rebind: ->
+        that = @
+        d = @dlg
+        
+        $("[data-val][data-label]", d[0].contentDocument).unbind ".item-selector"
+        $("[data-val][data-label] > .row_opers", d[0].contentDocument).unbind ".item-selector"
+
+        $("[data-val][data-label] > .row_opers", d[0].contentDocument).bind "click.item-selector", (e, ui)->
+            e.stopPropagation()
+        $("[data-val][data-label]", d[0].contentDocument).bind "dblclick.item-selector", (e, ui)->
+            e.stopPropagation()
+            val = $(@).attr "data-val"
+            label = $(@).attr "data-label"
+            con = true
+
+            window.parent.$ = window.parent.jQuery
+
+            if that.settings.onSelected
+                con = !(that.settings.onSelected(that, val, label) == false)
+
+            if con
+                that.wnd.$("[id='#{that.settings.parentValFieldId}']").val val
+                that.wnd.$("[id='#{that.settings.parentLabelFieldId}']").val label
+
+            setTimeout ->
+                    d.dialog "close"
+                    that.wnd.itemSelector = null
+                , 10
 
 $.fn.extend
   itemSelector: (method) ->
@@ -74,6 +101,8 @@ $.fn.extend
         parentValFieldId : null #data-parent-val-field-id
 
         parentLabelFieldId : null #data-parent-label-field-id
+
+        onSelected : null
 
     methods = {
         init: (options) ->
@@ -132,9 +161,9 @@ $.fn.extend
                  $this.removeData "ItemSelector"
 
         click: (event)->
-                event.preventDefault()
-                $(@).data("ItemSelector").presenter.click()
-                false
+            event.preventDefault()
+            $(@).data("ItemSelector").presenter.click()
+            false
 
         }
 

@@ -70,7 +70,7 @@ class FilterPresenter
 
 $.fn.extend
 
-  filter: (method) ->
+  daFilter: (method) ->
 
     inputSettings =
 
@@ -189,4 +189,4 @@ $.fn.extend
     else if typeof method == 'object' || ! method
         methods.init.apply this, arguments
     else
-        $.error "Method " +  method + " does not exist on jQuery.TableHeaderSort"
+        $.error "Method " +  method + " does not exist on jQuery.daFilter"

@@ -107,7 +107,7 @@
     return FilterPresenter;
   })();
   $.fn.extend({
-    filter: function(method) {
+    daFilter: function(method) {
       var inputSettings, methods, settings;
       inputSettings = {
         marker: null,
@@ -219,7 +219,7 @@
       } else if (typeof method === 'object' || !method) {
         return methods.init.apply(this, arguments);
       } else {
-        return $.error("Method " + method + " does not exist on jQuery.TableHeaderSort");
+        return $.error("Method " + method + " does not exist on jQuery.daFilter");
       }
     }
   });

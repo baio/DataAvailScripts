@@ -39,16 +39,49 @@
   <ItemGroup>
     <Content Include="copy.txt" />
     <Content Include="da.utils.js" />
+    <Content Include="dep\datajs-1.0.1.min.js" />
+    <Content Include="dep\jquery.cookie.js" />
+    <Content Include="dep\jquery.hotkeys.js" />
+    <Content Include="dep\jquery.jstree.js" />
     <Content Include="dep\jquery.tagit.css" />
     <Content Include="dep\tag-it.js" />
     <Content Include="dep\tagit.ui-zendesk.css" />
+    <Content Include="dep\themes\apple\bg.jpg" />
+    <Content Include="dep\themes\apple\d.png" />
+    <Content Include="dep\themes\apple\dot_for_ie.gif" />
+    <Content Include="dep\themes\apple\style.css" />
+    <Content Include="dep\themes\apple\throbber.gif" />
+    <Content Include="dep\themes\classic\d.gif" />
+    <Content Include="dep\themes\classic\d.png" />
+    <Content Include="dep\themes\classic\dot_for_ie.gif" />
+    <Content Include="dep\themes\classic\style.css" />
+    <Content Include="dep\themes\classic\throbber.gif" />
+    <Content Include="dep\themes\default-rtl\d.gif" />
+    <Content Include="dep\themes\default-rtl\d.png" />
+    <Content Include="dep\themes\default-rtl\dots.gif" />
+    <Content Include="dep\themes\default-rtl\style.css" />
+    <Content Include="dep\themes\default-rtl\throbber.gif" />
+    <Content Include="dep\themes\default\d.gif" />
+    <Content Include="dep\themes\default\d.png" />
+    <Content Include="dep\themes\default\style.css" />
+    <Content Include="dep\themes\default\throbber.gif" />
     <Content Include="jquery.ui.da.auto-complete.js" />
     <Content Include="jquery.ui.da.date-picker.js" />
+    <Content Include="jquery.ui.da.def-val-ref.js" />
+    <Content Include="jquery.ui.da.def-val-ref1.js">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>jquery.ui.da.def-val-ref.coffee</DependentUpon>
+    </Content>
     <Content Include="jquery.ui.da.filter.js" />
     <Content Include="jquery.ui.da.item-selector.js" />
     <Content Include="jquery.ui.da.item-sorter.js" />
     <Content Include="jquery.ui.da.list-sorter.js" />
-    <Content Include="jquery.ui.da.tag-it-ext.js" />
+    <Content Include="jquery.ui.da.tag-it-ext.js">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>jquery.ui.da.tag-it-ext.coffee</DependentUpon>
+    </Content>
     <Content Include="jquery.ui.da.tag-it-ext1.js">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -56,9 +89,20 @@
     </Content>
     <Content Include="jquery.ui.da.text-box.css" />
     <Content Include="jquery.ui.da.text-box.js" />
+    <Content Include="jquery.ui.da.tree.js" />
+    <Content Include="jquery.ui.da.tree1.js">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>jquery.ui.da.tree.coffee</DependentUpon>
+    </Content>
+    <Content Include="Копия jquery.ui.da.item-selector.js" />
     <None Include="da.utils.coffee" />
     <None Include="jquery.ui.da.auto-complete.coffee" />
     <None Include="jquery.ui.da.date-picker.coffee" />
+    <None Include="jquery.ui.da.def-val-ref.coffee">
+      <Generator>CoffeeScriptGenerator</Generator>
+      <LastGenOutput>jquery.ui.da.def-val-ref1.js</LastGenOutput>
+    </None>
     <None Include="jquery.ui.da.filter.coffee" />
     <None Include="jquery.ui.da.item-selector.coffee" />
     <None Include="jquery.ui.da.item-sorter.coffee" />
@@ -68,6 +112,10 @@
       <LastGenOutput>jquery.ui.da.tag-it-ext1.js</LastGenOutput>
     </None>
     <None Include="jquery.ui.da.text-box.coffee" />
+    <None Include="jquery.ui.da.tree.coffee">
+      <Generator>CoffeeScriptGenerator</Generator>
+      <LastGenOutput>jquery.ui.da.tree1.js</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -78,7 +126,9 @@
     </PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>copy $(ProjectDir)jquery.ui.da.date-picker.js C:\vs\DataAvail\DataAvail.MVC.Boilerplate\content\js\jquery.ui.da.date-picker.js
+    <PostBuildEvent># BOILER PLATE 
+
+﻿copy $(ProjectDir)jquery.ui.da.date-picker.js C:\vs\DataAvail\DataAvail.MVC.Boilerplate\content\js\jquery.ui.da.date-picker.js
 copy $(ProjectDir)jquery.ui.da.auto-complete.js C:\vs\DataAvail\DataAvail.MVC.Boilerplate\content\js\jquery.ui.da.auto-complete.js
 copy $(ProjectDir)jquery.ui.da.item-selector.js C:\vs\DataAvail\DataAvail.MVC.Boilerplate\content\js\jquery.ui.da.item-selector.js
 copy $(ProjectDir)jquery.ui.da.list-sorter.js C:\vs\DataAvail\DataAvail.MVC.Boilerplate\content\js\jquery.ui.da.list-sorter.js
@@ -91,19 +141,41 @@ copy $(ProjectDir)jquery.ui.da.tag-it-ext.js C:\vs\DataAvail\DataAvail.MVC.Boile
 copy $(ProjectDir)\dep\tag-it.js C:\vs\DataAvail\DataAvail.MVC.Boilerplate\content\js\dep\tag-it.js
 copy $(ProjectDir)\dep\jquery.tagit.css C:\vs\DataAvail\DataAvail.MVC.Boilerplate\content\js\dep\jquery.tagit.css
 
-copy $(ProjectDir)jquery.ui.da.date-picker.js C:\vs\ITS\Project\ITS.LandLord\content\js\jquery.ui.da.date-picker.js
-copy $(ProjectDir)jquery.ui.da.auto-complete.js C:\vs\ITS\Project\ITS.LandLord\content\js\jquery.ui.da.auto-complete.js
-copy $(ProjectDir)jquery.ui.da.item-selector.js C:\vs\ITS\Project\ITS.LandLord\content\js\jquery.ui.da.item-selector.js
-copy $(ProjectDir)jquery.ui.da.list-sorter.js C:\vs\Project\ITS\ITS.LandLord\content\js\jquery.ui.da.list-sorter.js
-copy $(ProjectDir)jquery.ui.da.table.item-sorter.js C:\vs\ITS\Project\ITS.LandLord\content\js\jquery.ui.da.item-sorter.js
-copy $(ProjectDir)jquery.ui.da.filter.js C:\vs\ITS\Project\ITS.LandLord\content\js\jquery.ui.da.filter.js
-copy $(ProjectDir)da.utils.js C:\vs\ITS\Project\ITS.LandLord\content\js\da.utils.js
-copy $(ProjectDir)jquery.ui.da.text-box.js C:\vs\ITS\Project\ITS.LandLord\content\js\jquery.ui.da.text-box.js
-copy $(ProjectDir)jquery.ui.da.text-box.css C:\vs\ITS\Project\ITS.LandLord\content\js\jquery.ui.da.text-box.css
-copy $(ProjectDir)jquery.ui.da.tag-it-ext.js C:\vs\ITS\Project\ITS.LandLord\content\js\jquery.ui.da.tag-it-ext.js
-copy $(ProjectDir)\dep\tag-it.js C:\vs\ITS\ITS.LandLord\Project\content\js\dep\tag-it.js
-copy $(ProjectDir)\dep\jquery.tagit.css C:\vs\ITS\Project\ITS.LandLord\content\js\dep\jquery.tagit.css
-</PostBuildEvent>
+#jstree
+
+copy $(ProjectDir)\dep\datajs-1.0.1.min.js C:\vs\DataAvail\DataAvail.MVC.Boilerplate\content\js\dep\datajs-1.0.1.min.js
+copy $(ProjectDir)\dep\jquery.jstree.js C:\vs\DataAvail\DataAvail.MVC.Boilerplate\content\js\dep\jquery.jstree.js
+copy $(ProjectDir)\dep\jquery.cookie.js C:\vs\DataAvail\DataAvail.MVC.Boilerplate\content\js\dep\jquery.cookie.js
+copy $(ProjectDir)\dep\jquery.hotkeys.js C:\vs\DataAvail\DataAvail.MVC.Boilerplate\content\js\dep\jquery.hotkeys.js
+copy $(ProjectDir)\jquery.ui.da.tree.js C:\vs\DataAvail\DataAvail.MVC.Boilerplate\content\js\jquery.ui.da.tree.js
+copy $(ProjectDir)\dep\jquery.balloon.min.js C:\vs\DataAvail\DataAvail.MVC.Boilerplate\content\js\dep\jquery.balloon.min.js
+
+
+# ITS LAND LORD LOCAL #
+
+copy $(ProjectDir)jquery.ui.da.date-picker.js C:\vs\DataAvail\ITS.LandLord\content\js\jquery.ui.da.date-picker.js
+copy $(ProjectDir)jquery.ui.da.auto-complete.js C:\vs\DataAvail\ITS.LandLord\content\js\jquery.ui.da.auto-complete.js
+copy $(ProjectDir)jquery.ui.da.item-selector.js C:\vs\DataAvail\ITS.LandLord\content\js\jquery.ui.da.item-selector.js
+copy $(ProjectDir)jquery.ui.da.list-sorter.js C:\vs\DataAvail\ITS.LandLord\content\js\jquery.ui.da.list-sorter.js
+copy $(ProjectDir)jquery.ui.da.table.item-sorter.js C:\vs\DataAvail\ITS.LandLord\content\js\jquery.ui.da.item-sorter.js
+copy $(ProjectDir)jquery.ui.da.filter.js C:\vs\DataAvail\ITS.LandLord\content\js\jquery.ui.da.filter.js
+copy $(ProjectDir)da.utils.js C:\vs\DataAvail\ITS.LandLord\content\js\da.utils.js
+copy $(ProjectDir)jquery.ui.da.text-box.js C:\vs\DataAvail\ITS.LandLord\content\js\jquery.ui.da.text-box.js
+copy $(ProjectDir)jquery.ui.da.text-box.css C:\vs\DataAvail\ITS.LandLord\content\js\jquery.ui.da.text-box.css
+copy $(ProjectDir)jquery.ui.da.tag-it-ext.js C:\vs\DataAvail\ITS.LandLord\content\js\jquery.ui.da.tag-it-ext.js
+copy $(ProjectDir)\dep\tag-it.js C:\vs\DataAvail\DataAvail\content\js\dep\tag-it.js
+copy $(ProjectDir)\dep\jquery.tagit.css C:\vs\DataAvail\ITS.LandLord\content\js\dep\jquery.tagit.css
+
+
+#jstree
+copy $(ProjectDir)\dep\datajs-1.0.1.min.js C:\vs\DataAvail\ITS.LandLord\content\js\dep\datajs-1.0.1.min.js
+copy $(ProjectDir)\dep\jquery.jstree.js C:\vs\DataAvail\ITS.LandLord\content\js\dep\jquery.jstree.js
+copy $(ProjectDir)\dep\jquery.cookie.js C:\vs\DataAvail\ITS.LandLord\content\js\dep\jquery.cookie.js
+copy $(ProjectDir)\dep\jquery.hotkeys.js C:\vs\DataAvail\ITS.LandLord\content\js\dep\jquery.hotkeys.js
+copy $(ProjectDir)\jquery.ui.da.tree.js C:\vs\DataAvail\ITS.LandLord\content\js\jquery.ui.da.tree.js
+copy $(ProjectDir)\dep\jquery.balloon.min.js C:\vs\DataAvail\ITS.LandLord\content\js\dep\jquery.balloon.min.js
+
+copy $(ProjectDir)jquery.ui.da.def-val-ref.js C:\vs\DataAvail\ITS.LandLord\content\js\jquery.ui.da.def-val-ref.js</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

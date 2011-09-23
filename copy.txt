@@ -1,4 +1,6 @@
-﻿﻿copy $(ProjectDir)jquery.ui.da.date-picker.js C:\vs\DataAvail\DataAvail.MVC.Boilerplate\content\js\jquery.ui.da.date-picker.js
+﻿# BOILER PLATE 
+
+﻿copy $(ProjectDir)jquery.ui.da.date-picker.js C:\vs\DataAvail\DataAvail.MVC.Boilerplate\content\js\jquery.ui.da.date-picker.js
 copy $(ProjectDir)jquery.ui.da.auto-complete.js C:\vs\DataAvail\DataAvail.MVC.Boilerplate\content\js\jquery.ui.da.auto-complete.js
 copy $(ProjectDir)jquery.ui.da.item-selector.js C:\vs\DataAvail\DataAvail.MVC.Boilerplate\content\js\jquery.ui.da.item-selector.js
 copy $(ProjectDir)jquery.ui.da.list-sorter.js C:\vs\DataAvail\DataAvail.MVC.Boilerplate\content\js\jquery.ui.da.list-sorter.js
@@ -11,6 +13,47 @@ copy $(ProjectDir)jquery.ui.da.tag-it-ext.js C:\vs\DataAvail\DataAvail.MVC.Boile
 copy $(ProjectDir)\dep\tag-it.js C:\vs\DataAvail\DataAvail.MVC.Boilerplate\content\js\dep\tag-it.js
 copy $(ProjectDir)\dep\jquery.tagit.css C:\vs\DataAvail\DataAvail.MVC.Boilerplate\content\js\dep\jquery.tagit.css
 
+#jstree
+
+copy $(ProjectDir)\dep\datajs-1.0.1.min.js C:\vs\DataAvail\DataAvail.MVC.Boilerplate\content\js\dep\datajs-1.0.1.min.js
+copy $(ProjectDir)\dep\jquery.jstree.js C:\vs\DataAvail\DataAvail.MVC.Boilerplate\content\js\dep\jquery.jstree.js
+copy $(ProjectDir)\dep\jquery.cookie.js C:\vs\DataAvail\DataAvail.MVC.Boilerplate\content\js\dep\jquery.cookie.js
+copy $(ProjectDir)\dep\jquery.hotkeys.js C:\vs\DataAvail\DataAvail.MVC.Boilerplate\content\js\dep\jquery.hotkeys.js
+copy $(ProjectDir)\jquery.ui.da.tree.js C:\vs\DataAvail\DataAvail.MVC.Boilerplate\content\js\jquery.ui.da.tree.js
+copy $(ProjectDir)\dep\jquery.balloon.min.js C:\vs\DataAvail\DataAvail.MVC.Boilerplate\content\js\dep\jquery.balloon.min.js
+
+copy $(ProjectDir)jquery.ui.da.def-val-ref.js C:\vs\DataAvail\DataAvail.MVC.Boilerplate\content\js\jquery.ui.da.def-val-ref.js
+
+
+# ITS LAND LORD LOCAL #
+
+copy $(ProjectDir)jquery.ui.da.date-picker.js C:\vs\DataAvail\ITS.LandLord\content\js\jquery.ui.da.date-picker.js
+copy $(ProjectDir)jquery.ui.da.auto-complete.js C:\vs\DataAvail\ITS.LandLord\content\js\jquery.ui.da.auto-complete.js
+copy $(ProjectDir)jquery.ui.da.item-selector.js C:\vs\DataAvail\ITS.LandLord\content\js\jquery.ui.da.item-selector.js
+copy $(ProjectDir)jquery.ui.da.list-sorter.js C:\vs\DataAvail\ITS.LandLord\content\js\jquery.ui.da.list-sorter.js
+copy $(ProjectDir)jquery.ui.da.table.item-sorter.js C:\vs\DataAvail\ITS.LandLord\content\js\jquery.ui.da.item-sorter.js
+copy $(ProjectDir)jquery.ui.da.filter.js C:\vs\DataAvail\ITS.LandLord\content\js\jquery.ui.da.filter.js
+copy $(ProjectDir)da.utils.js C:\vs\DataAvail\ITS.LandLord\content\js\da.utils.js
+copy $(ProjectDir)jquery.ui.da.text-box.js C:\vs\DataAvail\ITS.LandLord\content\js\jquery.ui.da.text-box.js
+copy $(ProjectDir)jquery.ui.da.text-box.css C:\vs\DataAvail\ITS.LandLord\content\js\jquery.ui.da.text-box.css
+copy $(ProjectDir)jquery.ui.da.tag-it-ext.js C:\vs\DataAvail\ITS.LandLord\content\js\jquery.ui.da.tag-it-ext.js
+copy $(ProjectDir)\dep\tag-it.js C:\vs\DataAvail\DataAvail\content\js\dep\tag-it.js
+copy $(ProjectDir)\dep\jquery.tagit.css C:\vs\DataAvail\ITS.LandLord\content\js\dep\jquery.tagit.css
+
+
+#jstree
+copy $(ProjectDir)\dep\datajs-1.0.1.min.js C:\vs\DataAvail\ITS.LandLord\content\js\dep\datajs-1.0.1.min.js
+copy $(ProjectDir)\dep\jquery.jstree.js C:\vs\DataAvail\ITS.LandLord\content\js\dep\jquery.jstree.js
+copy $(ProjectDir)\dep\jquery.cookie.js C:\vs\DataAvail\ITS.LandLord\content\js\dep\jquery.cookie.js
+copy $(ProjectDir)\dep\jquery.hotkeys.js C:\vs\DataAvail\ITS.LandLord\content\js\dep\jquery.hotkeys.js
+copy $(ProjectDir)\jquery.ui.da.tree.js C:\vs\DataAvail\ITS.LandLord\content\js\jquery.ui.da.tree.js
+copy $(ProjectDir)\dep\jquery.balloon.min.js C:\vs\DataAvail\ITS.LandLord\content\js\dep\jquery.balloon.min.js
+
+copy $(ProjectDir)jquery.ui.da.def-val-ref.js C:\vs\DataAvail\ITS.LandLord\content\js\jquery.ui.da.def-val-ref.js
+
+
+/####################/
+
 copy $(ProjectDir)jquery.ui.da.date-picker.js C:\vs\ITS\Project\ITS.LandLord\content\js\jquery.ui.da.date-picker.js
 copy $(ProjectDir)jquery.ui.da.auto-complete.js C:\vs\ITS\Project\ITS.LandLord\content\js\jquery.ui.da.auto-complete.js
 copy $(ProjectDir)jquery.ui.da.item-selector.js C:\vs\ITS\Project\ITS.LandLord\content\js\jquery.ui.da.item-selector.js
@@ -21,18 +64,15 @@ copy $(ProjectDir)da.utils.js C:\vs\ITS\Project\ITS.LandLord\content\js\da.utils
 copy $(ProjectDir)jquery.ui.da.text-box.js C:\vs\ITS\Project\ITS.LandLord\content\js\jquery.ui.da.text-box.js
 copy $(ProjectDir)jquery.ui.da.text-box.css C:\vs\ITS\Project\ITS.LandLord\content\js\jquery.ui.da.text-box.css
 copy $(ProjectDir)jquery.ui.da.tag-it-ext.js C:\vs\ITS\Project\ITS.LandLord\content\js\jquery.ui.da.tag-it-ext.js
-copy $(ProjectDir)\dep\tag-it.js C:\vs\ITS\ITS.LandLord\Project\content\js\dep\tag-it.js
+copy $(ProjectDir)\dep\tag-it.js C:\vs\ITS\Project\ITS.LandLord\content\js\dep\tag-it.js
 copy $(ProjectDir)\dep\jquery.tagit.css C:\vs\ITS\Project\ITS.LandLord\content\js\dep\jquery.tagit.css
 
-copy $(ProjectDir)jquery.ui.da.date-picker.js C:\vs\ITS\Project\DataAvail.MVC.Boilerplate\content\js\jquery.ui.da.date-picker.js
-copy $(ProjectDir)jquery.ui.da.auto-complete.js C:\vs\ITS\Project\DataAvail.MVC.Boilerplate\content\js\jquery.ui.da.auto-complete.js
-copy $(ProjectDir)jquery.ui.da.item-selector.js C:\vs\ITS\Project\DataAvail.MVC.Boilerplate\content\js\jquery.ui.da.item-selector.js
-copy $(ProjectDir)jquery.ui.da.list-sorter.js C:\vs\ITS\Project\DataAvail.MVC.Boilerplate\content\js\jquery.ui.da.list-sorter.js
-copy $(ProjectDir)jquery.ui.da.table.item-sorter.js C:\vs\ITS\Project\DataAvail.MVC.Boilerplate\content\js\jquery.ui.da.item-sorter.js
-copy $(ProjectDir)jquery.ui.da.filter.js C:\vs\ITS\Project\DataAvail.MVC.Boilerplate\content\js\jquery.ui.da.filter.js
-copy $(ProjectDir)da.utils.js C:\vs\ITS\Project\DataAvail.MVC.Boilerplate\content\js\da.utils.js
-copy $(ProjectDir)jquery.ui.da.text-box.js C:\vs\ITS\Project\DataAvail.MVC.Boilerplate\content\js\jquery.ui.da.text-box.js
-copy $(ProjectDir)jquery.ui.da.text-box.css C:\vs\ITS\Project\DataAvail.MVC.Boilerplate\content\js\jquery.ui.da.text-box.css
-copy $(ProjectDir)jquery.ui.da.tag-it-ext.js C:\vs\ITS\Project\DataAvail.MVC.Boilerplate\content\js\jquery.ui.da.tag-it-ext.js
-copy $(ProjectDir)\dep\tag-it.js C:\vs\ITS\Project\DataAvail.MVC.Boilerplate\content\js\dep\tag-it.js
-copy $(ProjectDir)\dep\jquery.tagit.css C:\vs\ITS\Project\DataAvail.MVC.Boilerplate\content\js\dep\jquery.tagit.css
+//jstree
+copy $(ProjectDir)\dep\datajs-1.0.1.min.js C:\vs\ITS\Project\ITS.LandLord\content\js\dep\datajs-1.0.1.min.js
+copy $(ProjectDir)\dep\jquery.jstree.js C:\vs\ITS\Project\ITS.LandLord\content\js\dep\jquery.jstree.js
+copy $(ProjectDir)\dep\jquery.cookie.js C:\vs\ITS\Project\ITS.LandLord\content\js\dep\jquery.cookie.js
+copy $(ProjectDir)\dep\jquery.hotkeys.js C:\vs\ITS\Project\ITS.LandLord\content\js\dep\jquery.hotkeys.js
+copy $(ProjectDir)\jquery.ui.da.tree.js C:\vs\ITS\Project\ITS.LandLord\content\js\jquery.ui.da.tree.js
+copy $(ProjectDir)\dep\jquery.balloon.min.js C:\vs\ITS\Project\ITS.LandLord\content\js\dep\jquery.balloon.min.js
+
+copy $(ProjectDir)jquery.ui.da.def-val-ref.js C:\vs\ITS\Project\ITS.LandLord\content\js\jquery.ui.da.def-val-ref.js

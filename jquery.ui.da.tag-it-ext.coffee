@@ -14,6 +14,8 @@ $.widget 'ui.tagitext',
         valueNode : null
         url : null
         filter : null
+        onTagAdded : null
+        onCreateTagHtml : null
 
 
     _create: ->
@@ -21,16 +23,30 @@ $.widget 'ui.tagitext',
 
         @options.url ?= el.attr "data-url"
         @options.filter ?= el.attr "data-filter"
-        el.tagit
-            animate : false
-            onTagAdded : @_onTagAdded
-            onTagRemoved : @_onTagRemoved
-            tagSource : @_tagSource
-            ext : @
-            allowNotInList : false
+
+        keys = if  @options.valueNode then @options.valueNode.val().split ',' else []
+        vals = el.val().split ','
+
+        availableTags = $.map vals, (val, index) ->
+            key : keys[index]
+            value : vals[index]
+            label : vals[index]
+
+        @options.tagIt =
+            el.tagit
+                animate : false
+                onTagAdded : @_onTagAdded
+                onTagRemoved : @_onTagRemoved
+                tagSource : @_tagSource
+                ext : @
+                allowNotInList : false
+                availableTags : availableTags
+                onCreateTagHtml : @options.onCreateTagHtml
 
         @options.valueNode ?= el.attr "data-value-field"
         @options.valueNode = $("#"+@options.valueNode) if typeof @options.valueNode == "string"
+
+
 
     _tagSource : (search, showChoices)->
 
@@ -44,7 +60,7 @@ $.widget 'ui.tagitext',
              success:    (data) ->
 
                    choices = $.map data.d, (element)->
-                       value : element.Name
+                       value : element.Label
                        label : element.Label
                        key : element.Id
 
@@ -60,11 +76,20 @@ $.widget 'ui.tagitext',
 
         vn = ext.options.valueNode
 
-        if (vn)
-            value = $(":first", tag).text()
+        value = $(":first", tag).text()
+
+        if ext.options.creating
+            key = ext.options.creating.key
+            label = ext.options.creating.label
+        else
             item = $.grep ext._getItems(that.options.availableTags), (element)-> element.value == value
             key = if item.length > 0 then item[0].key else -1
-            vn.val "#{if vn.val() then vn.val() + "," else ""}#{key}"
+            label = if item.length > 0 then item[0].label else null
+
+        if (vn)
+             vn.val "#{if vn.val() then vn.val() + "," else ""}#{key}"
+
+        ext._trigger "onTagAdded", null, {tag : tag, item : {key : key, value : value, label : label}}
 
     _onTagRemoved: (event, tag) ->
 
@@ -73,7 +98,7 @@ $.widget 'ui.tagitext',
 
         vn = ext.options.valueNode
 
-        if (vn)
+        if vn
             val = $(":first", tag).text()
             values = $(this).val().split ','
             i = values.indexOf val
@@ -93,3 +118,9 @@ $.widget 'ui.tagitext',
 
     _expellExistent: (items, existent) ->
         $.grep items, (element) -> $.inArray(element.value, existent) == -1
+
+
+    createTag: (key, value, label) ->
+        @options.creating = { key : key, value : value, label : label }
+        @options.tagIt.tagit "createTag", value
+        @options.creating = null

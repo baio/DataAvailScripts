@@ -88,7 +88,9 @@
             //events raised when user input restrictions occurs
             onMaxChars : null,
             onMaxCount : null,
-            onNotAllowed : null
+            onNotAllowed : null,
+
+            onCreateTagHtml : null
         },
 
 
@@ -420,7 +422,13 @@
                 return false;
             }
 
-            var label = $(this.options.onTagClicked ? '<a class="tagit-label"></a>' : '<span class="tagit-label"></span>').text(value);
+            var tagHtml = {value : value, html : null};
+            this._trigger("onCreateTagHtml", null, tagHtml);
+
+            if (!tagHtml.html)
+                tagHtml.html = value;
+
+            var label = $(this.options.onTagClicked ? '<a class="tagit-label"></a>' : '<span class="tagit-label"></span>').html(tagHtml.html);
 
             // Create tag.
             var tag = $('<li></li>')
@@ -493,6 +501,11 @@
             this.tagList.children('.tagit-choice').each(function(index, tag) {
                 that.removeTag(tag, false);
             });
+        },
+
+        getOptions : function()
+        {
+            return this.options;
         }
 
     });
